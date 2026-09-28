@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PAKDE ADVENTURE - LEVEL 2</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/icon_game.png"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="game-wrapper">
+      <div class="game-header">
+        <div class="game-logo">PAKDE ADVENTURE</div>
+
+        <div class="game-info">
+          <button
+            id="pauseButton"
+            class="pause-button hidden"
+            aria-label="Pause Game"
+            title="Pause Game"
+          >
+            <span>Ⅱ</span>
+          </button>
+          <div>
+            SKOR
+            <strong id="score">000000</strong>
+          </div>
+
+          <div>
+            KOIN
+            <strong>🪙 <span id="coins">0</span></strong>
+          </div>
+
+          <div>
+            NYAWA
+            <strong>❤️ <span id="lives">3</span></strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- PAUSE SCREEN -->
+        <div id="pauseScreen" class="overlay hidden pause-overlay">
+          <div class="menu-card pause-card">
+            <div class="pixel-title pause-title">GAME PAUSED</div>
+
+            <p class="pause-description">Game sedang dijeda.</p>
+
+            <button id="resumeButton" class="pause-action-button">
+              LANJUTKAN
+            </button>
+
+            <button id="pauseMainMenuButton" class="pause-menu-button">
+              MENU UTAMA
+            </button>
+
+            <div class="pause-hint"><span>ESC</span> untuk lanjut / pause</div>
+          </div>
+        </div>
+
+        <!-- START SCREEN -->
+        <div id="startScreen" class="overlay">
+          <div class="menu-card">
+            <div class="pixel-title">PAKDE ADVENTURE</div>
+
+            <p class="level-title">LEVEL 2</p>
+
+            <p class="description">
+              Bantu PakDe Kumpulkan Koin dan Capai Garis Finish!
+            </p>
+
+            <button id="startButton">MULAI GAME</button>
+
+            <div class="controls">
+              <span>← → / A D</span>
+              <small>MOVE</small>
+
+              <span>SPACE / ↑</span>
+              <small>JUMP</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- GAME OVER -->
+        <div id="gameOverScreen" class="overlay hidden">
+          <div class="menu-card">
+            <div class="pixel-title">PAKDE TEWAS!!!</div>
+
+            <p>PETUALANGAN PAKDE SELESAI!</p>
+
+            <div class="final-score">
+              SCORE
+              <strong id="finalScore">000000</strong>
+            </div>
+
+            <button id="restartButton">COBA LAGI</button>
+          </div>
+        </div>
+
+        <!-- LEVEL 2 COMPLETE -->
+        <div id="winScreen" class="overlay hidden">
+          <div class="menu-card">
+            <div class="pixel-title">LEVEL 2 SELESAI</div>
+
+            <p>PakDe Berhasil Merebut Gedung DPR!</p>
+
+            <div class="final-score">
+              SCORE
+              <strong id="winScore">000000</strong>
+            </div>
+
+            <div class="level-buttons">
+              <button id="mainMenuButton">MENU UTAMA</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOBILE CONTROLS -->
+      <div class="mobile-controls">
+        <div class="move-buttons">
+          <button id="leftBtn">◀</button>
+          <button id="rightBtn">▶</button>
+        </div>
+
+        <button id="jumpBtn">▲</button>
+      </div>
+    </div>
+
+    <!-- JS -->
+    <script src="js/ui-sound.js"></script>
+    <script src="js/game2.js"></script>
+  </body>
+</html>

@@ -1,0 +1,948 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PakDe Adventure</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Pixel&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/icon_game.png"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family: "Geist Pixel", sans-serif;
+      }
+
+      /* Main Menu */
+      .main-menu {
+        width: 100%;
+        height: 100dvh;
+        max-height: 100dvh;
+        background: url("assets/main-menu.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        position: relative;
+        overflow: hidden;
+        padding: clamp(10px, 3vh, 45px) clamp(12px, 3vw, 30px);
+      }
+
+      /* Main Container */
+      .menu-container {
+        width: 100%;
+        max-width: 700px;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      /* Header */
+      .menu-header {
+        flex-shrink: 0;
+        margin-top: 30px;
+      }
+
+      .menu-logo {
+        font-size: clamp(32px, 9vw, 62px);
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: 5px;
+        color: #f4f7e9;
+        text-shadow:
+          5px 5px 0 #12251a,
+          9px 9px 0 rgba(0, 0, 0, 0.4);
+        margin: 0;
+      }
+
+      /* Subtitle */
+      .menu-subtitle {
+        color: #f4f7e9;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.4;
+        letter-spacing: 4px;
+        margin: clamp(6px, 1.5vh, 14px) 0 clamp(14px, 3vh, 48px);
+      }
+
+      /* Line */
+      .line {
+        width: 100%;
+        height: 3px;
+        background-color: #fff;
+      }
+
+      /* SCREEN WRAPPER */
+      .screen-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .screen {
+        display: none;
+        width: 100%;
+      }
+
+      .screen.active {
+        display: block;
+      }
+
+      /* MAIN MENU BUTTONS */
+      .main-buttons {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: clamp(18px, 2vh, 28px);
+        margin-top: clamp(20px, 4vh, 40px);
+      }
+
+      .main-menu-button {
+        width: 100%;
+        min-height: 60px;
+        border: 3px solid #fff;
+        background: rgba(250, 250, 250, 0.2);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+        color: #000;
+        font-weight: 800;
+        font-size: 18px;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          border-color 0.15s ease,
+          background 0.15s ease;
+        padding: 14px;
+        border-radius: 15px;
+      }
+
+      .main-menu-button:hover {
+        transform: translate(-2px, -2px);
+        background: #fff;
+        color: #10251a;
+        border-color: #000;
+      }
+
+      .main-menu-button:active {
+        transform: translate(2px, 2px);
+      }
+
+      .main-menu-button.exit-button:hover {
+        background: #ff4d4d;
+        color: #fff;
+        border-color: #000;
+      }
+
+      /* Select Level */
+      .menu-card {
+        width: 100%;
+        background: transparent;
+        padding: clamp(10px, 2.5vh, 30px);
+        margin: 0 auto;
+        margin-top: 15px;
+      }
+
+      .level-header-row {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 0 clamp(20px, 2vh, 30px);
+      }
+
+      .back-button {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 18px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        white-space: nowrap;
+        font-weight: bold;
+      }
+
+      .back-button:hover {
+        color: #000;
+      }
+
+      /* Card Title */
+      .menu-heading {
+        color: #fff;
+        font-size: 22px;
+        font-weight: bold;
+        line-height: 1.2;
+        letter-spacing: 2px;
+        margin: 0;
+      }
+
+      /* LEVEL Grid */
+      .level-list {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(8px, 1.5vh, 15px);
+        margin-bottom: 20px;
+      }
+
+      .level-button {
+        width: 100%;
+        min-height: 85px;
+        border: 3px solid #fff;
+        background: rgba(250, 250, 250, 0.2);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+        font-weight: 800;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          border-color 0.15s ease;
+        position: relative;
+        padding: clamp(6px, 1.5vh, 12px);
+        border-radius: 15px;
+      }
+
+      .level-button:hover:not(.locked):not(:disabled) {
+        transform: translate(-2px, -2px);
+        background: #fff;
+        border-color: #000;
+      }
+
+      .level-button:active:not(.locked):not(:disabled) {
+        transform: translate(2px, 2px);
+      }
+
+      .level-number {
+        display: block;
+        font-size: 20px;
+        line-height: 1.2;
+        margin-bottom: 5px;
+      }
+
+      .level-status {
+        display: block;
+        font-size: 11px;
+        line-height: 1.4;
+        color: #000;
+        letter-spacing: 1px;
+      }
+
+      .level-button.locked {
+        cursor: not-allowed;
+        background: #66736a;
+        border-color: #fff;
+        color: #fff;
+        opacity: 0.75;
+      }
+
+      .level-button.locked .level-status {
+        color: #fff;
+      }
+
+      .level-button.locked:hover {
+        transform: none;
+      }
+
+      .lock-icon {
+        display: inline-block;
+        font-size: 16px;
+        margin-left: 5px;
+        vertical-align: middle;
+      }
+
+      .menu-footer {
+        margin-top: clamp(10px, 2vh, 28px);
+        color: #fff;
+        font-size: 14px;
+        line-height: 1.5;
+        letter-spacing: 1px;
+      }
+
+      .reset-progress {
+        margin-top: clamp(8px, 1.5vh, 18px);
+        padding: 5px 8px;
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+      .reset-progress:hover {
+        color: #000;
+      }
+
+      /* =========================
+         SOUND BUTTON
+      ========================= */
+
+      .sound-button {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        width: 50px;
+        height: 50px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 3px solid #fff;
+        border-radius: 12px;
+
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+
+        color: #fff;
+        font-size: 22px;
+
+        cursor: pointer;
+
+        z-index: 9999;
+
+        transition:
+          transform 0.15s ease,
+          background 0.15s ease;
+      }
+
+      .sound-button:hover {
+        transform: translate(-2px, -2px);
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .sound-button:active {
+        transform: translate(2px, 2px);
+      }
+
+      /* Tablet */
+      @media (min-width: 601px) and (max-width: 1024px) {
+        .menu-logo {
+          font-size: clamp(48px, 9vw, 70px);
+          letter-spacing: 3px;
+        }
+
+        .menu-subtitle {
+          font-size: 13px;
+        }
+      }
+
+      /* Mobile */
+      @media (max-width: 600px) {
+        .menu-logo {
+          font-size: clamp(38px, 12vw, 58px);
+          letter-spacing: 2px;
+          text-shadow:
+            4px 4px 0 #12251a,
+            7px 7px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .menu-subtitle {
+          font-size: 10px;
+          letter-spacing: 2px;
+        }
+
+        .main-menu-button {
+          font-size: 15px;
+          min-height: 54px;
+        }
+
+        .menu-card {
+          width: 100%;
+          border-width: 2px;
+        }
+
+        .back-button {
+          font-size: 11px;
+        }
+
+        .menu-heading {
+          font-size: 19px;
+        }
+
+        .level-list {
+          grid-template-columns: 1fr;
+        }
+
+        .level-button {
+          min-height: 75px;
+        }
+
+        .level-number {
+          font-size: 18px;
+        }
+
+        .level-status {
+          font-size: 10px;
+        }
+
+        .menu-footer {
+          font-size: 9px;
+        }
+
+        .reset-progress {
+          font-size: 10px;
+        }
+
+        .sound-button {
+          width: 44px;
+          height: 44px;
+          right: 12px;
+          bottom: 12px;
+          font-size: 19px;
+        }
+      }
+
+      /* Small Mobile */
+      @media (max-width: 380px) {
+        .menu-logo {
+          font-size: 34px;
+          letter-spacing: 1px;
+        }
+
+        .menu-subtitle {
+          font-size: 8px;
+          letter-spacing: 1.5px;
+        }
+
+        .main-menu-button {
+          font-size: 13px;
+          min-height: 50px;
+        }
+
+        .back-button {
+          font-size: 10px;
+        }
+
+        .menu-heading {
+          font-size: 17px;
+        }
+
+        .level-button {
+          min-height: 68px;
+        }
+
+        .level-number {
+          font-size: 16px;
+        }
+
+        .level-status {
+          font-size: 9px;
+        }
+
+        .menu-footer {
+          font-size: 8px;
+        }
+
+        .reset-progress {
+          font-size: 9px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- =========================
+         AUDIO
+    ========================== -->
+
+    <!-- Background Music -->
+    <audio id="bgm" loop preload="auto">
+      <source src="assets/backsong2.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Button Sound -->
+    <audio id="clickSound" preload="auto">
+      <source src="assets/click.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Hover Sound -->
+    <audio id="hoverSound" preload="auto">
+      <source src="assets/hover.mp3" type="audio/mpeg" />
+    </audio>
+
+    <main class="main-menu">
+      <div class="menu-container">
+        <!-- HEADER -->
+        <div class="menu-header">
+          <div class="menu-logo">PAKDE <span>ADVENTURE</span></div>
+
+          <div class="menu-subtitle">
+            PETUALANGAN PAKDE MENJADI RAJA INDONESIA
+          </div>
+
+          <div class="line"></div>
+        </div>
+
+        <!-- SCREEN WRAPPER -->
+        <div class="screen-wrapper">
+          <!-- SCREEN 1: MAIN MENU -->
+          <div class="screen active" id="mainMenuScreen">
+            <div class="main-buttons">
+              <button class="main-menu-button" id="startGameButton">
+                MULAI GAME
+              </button>
+
+              <button class="main-menu-button" id="selectLevelButton">
+                PILIH LEVEL
+              </button>
+
+              <button class="main-menu-button exit-button" id="exitButton">
+                KELUAR
+              </button>
+            </div>
+          </div>
+
+          <!-- SCREEN 2: LEVEL SELECT -->
+          <div class="screen" id="levelSelectScreen">
+            <div class="menu-card">
+              <div class="level-header-row">
+                <button class="back-button" id="backButton">← KEMBALI</button>
+
+                <div class="menu-heading">PILIH LEVEL</div>
+              </div>
+
+              <div class="level-list">
+                <!-- LEVEL 1 -->
+                <button class="level-button" id="level1Button">
+                  <span class="level-number"> LEVEL 1 </span>
+
+                  <span class="level-status"> MONUMEN NASIONAL </span>
+                </button>
+
+                <!-- LEVEL 2 -->
+                <button class="level-button locked" id="level2Button">
+                  <span class="level-number">
+                    LEVEL 2
+
+                    <span class="lock-icon"> 🔒 </span>
+                  </span>
+
+                  <span class="level-status" id="level2Status">
+                    SELESAIKAN LEVEL 1
+                  </span>
+                </button>
+
+                <!-- LEVEL 3 -->
+                <button class="level-button locked" disabled>
+                  <span class="level-number">
+                    LEVEL 3
+
+                    <span class="lock-icon"> 🔒 </span>
+                  </span>
+
+                  <span class="level-status"> SEGERA HADIR </span>
+                </button>
+
+                <!-- LEVEL 4 -->
+                <button class="level-button locked" disabled>
+                  <span class="level-number">
+                    LEVEL 4
+
+                    <span class="lock-icon"> 🔒 </span>
+                  </span>
+
+                  <span class="level-status"> SEGERA HADIR </span>
+                </button>
+              </div>
+
+              <div class="menu-footer">
+                SELESAIKAN LEVEL UNTUK MEMBUKA PETUALANGAN BARU
+              </div>
+
+              <button class="reset-progress" id="resetProgressButton">
+                RESET PROGRES
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========================
+           SOUND TOGGLE BUTTON
+      ========================== -->
+
+      <button class="sound-button" id="soundButton" aria-label="Toggle sound">
+        🔊
+      </button>
+    </main>
+
+    <script>
+      /* =====================================================
+         ELEMENTS
+      ===================================================== */
+
+      const mainMenuScreen = document.getElementById("mainMenuScreen");
+
+      const levelSelectScreen = document.getElementById("levelSelectScreen");
+
+      const startGameButton = document.getElementById("startGameButton");
+
+      const selectLevelButton = document.getElementById("selectLevelButton");
+
+      const exitButton = document.getElementById("exitButton");
+
+      const backButton = document.getElementById("backButton");
+
+      const level1Button = document.getElementById("level1Button");
+
+      const level2Button = document.getElementById("level2Button");
+
+      const level2Status = document.getElementById("level2Status");
+
+      const resetProgressButton = document.getElementById(
+        "resetProgressButton",
+      );
+
+      /* =====================================================
+         AUDIO ELEMENTS
+      ===================================================== */
+
+      const bgm = document.getElementById("bgm");
+
+      const clickSound = document.getElementById("clickSound");
+
+      const hoverSound = document.getElementById("hoverSound");
+
+      const soundButton = document.getElementById("soundButton");
+
+      /* =====================================================
+         AUDIO SETTINGS
+      ===================================================== */
+
+      let soundEnabled = localStorage.getItem("soundEnabled") !== "false";
+
+      /*
+        Volume BGM
+        0.0 = silent
+        1.0 = maximum
+      */
+
+      bgm.volume = 0.35;
+
+      /*
+        Volume button sound
+      */
+
+      clickSound.volume = 0.7;
+
+      /* =====================================================
+         UPDATE SOUND BUTTON
+      ===================================================== */
+
+      function updateSoundButton() {
+        if (soundEnabled) {
+          soundButton.textContent = "🔊";
+        } else {
+          soundButton.textContent = "🔇";
+        }
+      }
+
+      /* =====================================================
+         START BGM
+      ===================================================== */
+
+      function startBGM() {
+        if (!soundEnabled) {
+          return;
+        }
+
+        bgm.play().catch(() => {
+          /*
+              Browser bisa memblokir autoplay.
+              BGM akan dicoba lagi ketika user
+              melakukan klik.
+            */
+        });
+      }
+
+      /* =====================================================
+         PLAY CLICK SOUND
+      ===================================================== */
+
+      function playClickSound() {
+        if (!soundEnabled) {
+          return;
+        }
+
+        clickSound.currentTime = 0;
+
+        clickSound.play().catch(() => {});
+      }
+
+      /* =====================================================
+   PLAY HOVER SOUND
+===================================================== */
+
+      function playHoverSound() {
+        if (!soundEnabled) {
+          return;
+        }
+
+        hoverSound.currentTime = 0;
+
+        hoverSound.play().catch(() => {});
+      }
+
+      /* =====================================================
+   HOVER SOUND UNTUK SEMUA BUTTON
+===================================================== */
+
+      const hoverButtons = document.querySelectorAll("button:not(:disabled)");
+
+      hoverButtons.forEach((button) => {
+        button.addEventListener("mouseenter", () => {
+          playHoverSound();
+        });
+      });
+
+      /* =====================================================
+         SOUND TOGGLE
+      ===================================================== */
+
+      soundButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+
+        soundEnabled = !soundEnabled;
+
+        localStorage.setItem("soundEnabled", soundEnabled);
+
+        if (soundEnabled) {
+          startBGM();
+
+          playClickSound();
+        } else {
+          bgm.pause();
+        }
+
+        updateSoundButton();
+      });
+
+      /* =====================================================
+         START AUDIO AFTER FIRST USER INTERACTION
+      ===================================================== */
+
+      document.addEventListener(
+        "click",
+        () => {
+          if (soundEnabled) {
+            startBGM();
+          }
+        },
+        { once: true },
+      );
+
+      /* =====================================================
+         SCREEN NAVIGATION
+      ===================================================== */
+
+      function showScreen(screenToShow) {
+        mainMenuScreen.classList.remove("active");
+
+        levelSelectScreen.classList.remove("active");
+
+        screenToShow.classList.add("active");
+      }
+
+      /* =====================================================
+         MULAI GAME
+      ===================================================== */
+
+      startGameButton.addEventListener("click", () => {
+        playClickSound();
+
+        startBGM();
+
+        window.location.href = "level1.html";
+      });
+
+      /* =====================================================
+         PILIH LEVEL
+      ===================================================== */
+
+      selectLevelButton.addEventListener("click", () => {
+        playClickSound();
+
+        startBGM();
+
+        showScreen(levelSelectScreen);
+      });
+
+      /* =====================================================
+         KEMBALI
+      ===================================================== */
+
+      backButton.addEventListener("click", () => {
+        playClickSound();
+
+        showScreen(mainMenuScreen);
+      });
+
+      /* =====================================================
+         KELUAR
+      ===================================================== */
+
+      exitButton.addEventListener("click", () => {
+        playClickSound();
+
+        const confirmExit = confirm("Yakin ingin keluar dari game?");
+
+        if (!confirmExit) {
+          return;
+        }
+
+        bgm.pause();
+
+        window.close();
+
+        setTimeout(() => {
+          alert("Silakan tutup tab ini secara manual untuk keluar.");
+        }, 300);
+      });
+
+      /* =====================================================
+         CHECK UNLOCK STATUS
+      ===================================================== */
+
+      function updateLevelStatus() {
+        const level2Unlocked =
+          localStorage.getItem("level2Unlocked") === "true";
+
+        if (level2Unlocked) {
+          level2Button.classList.remove("locked");
+
+          level2Button.innerHTML = `
+
+            <span class="level-number">
+              LEVEL 2
+            </span>
+
+            <span class="level-status">
+              GEDUNG DPR
+            </span>
+
+          `;
+        } else {
+          level2Button.classList.add("locked");
+
+          level2Button.innerHTML = `
+
+            <span class="level-number">
+
+              LEVEL 2
+
+              <span class="lock-icon">
+                🔒
+              </span>
+
+            </span>
+
+            <span class="level-status">
+              SELESAIKAN LEVEL 1
+            </span>
+
+          `;
+        }
+      }
+
+      /* =====================================================
+         LEVEL 1
+      ===================================================== */
+
+      level1Button.addEventListener("click", () => {
+        playClickSound();
+
+        startBGM();
+
+        window.location.href = "level1.html";
+      });
+
+      /* =====================================================
+         LEVEL 2
+      ===================================================== */
+
+      level2Button.addEventListener("click", () => {
+        const level2Unlocked =
+          localStorage.getItem("level2Unlocked") === "true";
+
+        if (!level2Unlocked) {
+          playClickSound();
+
+          return;
+        }
+
+        playClickSound();
+
+        startBGM();
+
+        window.location.href = "level2.html";
+      });
+
+      /* =====================================================
+         RESET PROGRESS
+      ===================================================== */
+
+      resetProgressButton.addEventListener("click", () => {
+        playClickSound();
+
+        const confirmReset = confirm(
+          "Kamu Yakin Untuk Reset Semua Progres Kamu?",
+        );
+
+        if (!confirmReset) {
+          return;
+        }
+
+        localStorage.removeItem("level2Unlocked");
+
+        updateLevelStatus();
+      });
+
+      /* =====================================================
+         INITIALIZATION
+      ===================================================== */
+
+      updateLevelStatus();
+
+      updateSoundButton();
+    </script>
+  </body>
+</html>
