@@ -1,8 +1,4 @@
-/* =========================================================
-   UI BUTTON SOUND
-   Hover  -> assets/hover.mp3
-   Click  -> assets/click.mp3
-========================================================= */
+// UI BUTTON SOUND
 
 (() => {
   const hoverSound = new Audio("assets/hover.mp3");

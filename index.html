@@ -4,6 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Social Share / Link Preview -->
+    <meta property="og:title" content="PAKDE ADVENTURE" />
+    <meta
+      property="og:description"
+      content="Petualangan Pakde Menjadi Raja Indonesia"
+    />
+    <meta property="og:image" content="assets/icon_game.png" />
+    <meta property="og:image:alt" content="PAKDE ADVENTURE" />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="PAKDE ADVENTURE" />
+    <meta
+      name="twitter:description"
+      content="Petualangan Pakde Menjadi Raja Indonesia"
+    />
+    <meta name="twitter:image" content="assets/icon_game.png" />
+
     <title>PakDe Adventure</title>
 
     <!-- Font -->
@@ -22,6 +40,79 @@
     />
 
     <style>
+      /* LANDSCAPE MOBILE / TABLET */
+      @media (max-width: 1024px) and (orientation: landscape) {
+        html,
+        body {
+          height: auto;
+          min-height: 100%;
+          overflow-x: hidden;
+          overflow-y: auto;
+        }
+
+        .main-menu {
+          height: auto;
+          min-height: 100dvh;
+          max-height: none;
+          overflow-x: hidden;
+          overflow-y: visible;
+          padding-top: 12px;
+          padding-bottom: 24px;
+        }
+
+        .menu-container {
+          height: auto;
+          min-height: calc(100dvh - 36px);
+        }
+
+        .menu-header {
+          margin-top: 8px;
+        }
+
+        .screen-wrapper {
+          flex: none;
+          overflow: visible;
+          justify-content: flex-start;
+        }
+
+        .main-buttons {
+          margin-top: 18px;
+          gap: 12px;
+        }
+
+        .main-menu-button {
+          min-height: 48px;
+          padding: 10px 14px;
+        }
+
+        .menu-card {
+          margin-top: 10px;
+          padding-top: 12px;
+          padding-bottom: 16px;
+        }
+
+        .level-header-row {
+          margin-bottom: 12px;
+        }
+
+        .level-list {
+          gap: 8px;
+          margin-bottom: 12px;
+        }
+
+        .level-button {
+          min-height: 62px;
+        }
+
+        .menu-footer {
+          margin-top: 8px;
+        }
+
+        .reset-progress {
+          margin-top: 6px;
+        }
+      }
+
       * {
         box-sizing: border-box;
       }
@@ -310,35 +401,25 @@
         color: #000;
       }
 
-      /* =========================
-         SOUND BUTTON
-      ========================= */
-
+      /* SOUND BUTTON */
       .sound-button {
         position: fixed;
         right: 20px;
         bottom: 20px;
         width: 50px;
         height: 50px;
-
         display: flex;
         align-items: center;
         justify-content: center;
-
         border: 3px solid #fff;
         border-radius: 12px;
-
         background: rgba(0, 0, 0, 0.35);
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
-
         color: #fff;
         font-size: 22px;
-
         cursor: pointer;
-
         z-index: 9999;
-
         transition:
           transform 0.15s ease,
           background 0.15s ease;
@@ -476,13 +557,222 @@
           font-size: 9px;
         }
       }
+
+      .exit-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.62);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 0.15s ease,
+          visibility 0.15s ease;
+      }
+
+      .exit-modal.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+      .exit-modal-card {
+        width: min(430px, 100%);
+        padding: 30px 26px 26px;
+        text-align: center;
+        background: #fff;
+        border: 4px solid #000;
+        border-radius: 20px;
+        box-shadow: 8px 8px 0 #12251a;
+        transform: translateY(8px) scale(0.97);
+        transition: transform 0.15s ease;
+      }
+
+      .exit-modal.active .exit-modal-card {
+        transform: translateY(0) scale(1);
+      }
+
+      .exit-modal-icon {
+        font-size: 38px;
+        line-height: 1;
+        margin-bottom: 12px;
+      }
+
+      .exit-modal-card h2 {
+        margin: 0 0 10px;
+        color: #12251a;
+        font-family: "Press Start 2P", monospace;
+        font-size: clamp(18px, 4vw, 25px);
+        line-height: 1.4;
+      }
+
+      .exit-modal-card p {
+        margin: 0 auto 22px;
+        max-width: 340px;
+        color: #333;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .exit-modal-card p strong {
+        color: #166534;
+      }
+
+      .exit-modal-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .exit-modal-actions button {
+        min-height: 50px;
+        padding: 12px 10px;
+        border: 3px solid #000;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition:
+          transform 0.1s ease,
+          box-shadow 0.1s ease;
+      }
+
+      .exit-cancel-button {
+        background: #e5e7eb;
+        color: #111827;
+      }
+
+      .exit-confirm-button {
+        background: #ff4d4d;
+        color: #fff;
+      }
+
+      .exit-modal-actions button:hover {
+        transform: translate(2px, 2px);
+        box-shadow: 3px 3px 0 #000;
+      }
+
+      .exit-modal-actions button:active {
+        transform: translate(3px, 3px);
+        box-shadow: none;
+      }
+
+      @media (max-width: 600px) {
+        .exit-modal {
+          padding: 14px;
+        }
+
+        .exit-modal-card {
+          padding: 22px 16px 18px;
+          border-width: 3px;
+          border-radius: 16px;
+          box-shadow: 5px 5px 0 #12251a;
+        }
+
+        .exit-modal-icon {
+          font-size: 30px;
+          margin-bottom: 8px;
+        }
+
+        .exit-modal-card p {
+          font-size: 11px;
+          margin-bottom: 16px;
+        }
+
+        .exit-modal-actions button {
+          min-height: 44px;
+          font-size: 11px;
+        }
+      }
+
+      @media (max-width: 1024px) and (orientation: landscape) {
+        .exit-modal {
+          padding: 10px 16px;
+        }
+
+        .exit-modal-card {
+          width: min(430px, 90vw);
+          padding: 14px 20px;
+          border-width: 3px;
+        }
+
+        .exit-modal-icon {
+          display: none;
+        }
+
+        .exit-modal-card h2 {
+          font-size: 17px;
+          margin-bottom: 6px;
+        }
+
+        .exit-modal-card p {
+          font-size: 10px;
+          margin-bottom: 10px;
+        }
+
+        .exit-modal-actions button {
+          min-height: 38px;
+          padding: 8px;
+          font-size: 10px;
+        }
+      }
+
+      @media (max-width: 1024px) and (orientation: landscape) {
+        html,
+        body {
+          width: 100%;
+          min-width: 0;
+          height: auto;
+          min-height: 100%;
+          overflow-x: hidden;
+          overflow-y: auto;
+        }
+
+        .main-menu {
+          width: 100%;
+          height: auto;
+          min-height: 100dvh;
+          max-height: none;
+          overflow-x: hidden;
+          overflow-y: auto;
+          padding-top: 12px;
+          padding-bottom: 24px;
+        }
+
+        .menu-container {
+          width: 100%;
+          height: auto;
+          min-height: calc(100dvh - 36px);
+        }
+
+        .screen-wrapper {
+          flex: none;
+          width: 100%;
+          min-height: 0;
+          height: auto;
+          overflow: visible;
+          justify-content: flex-start;
+        }
+
+        .screen {
+          width: 100%;
+          min-width: 0;
+        }
+      }
     </style>
   </head>
 
   <body>
-    <!-- =========================
-         AUDIO
-    ========================== -->
+    <!--  AUDIO -->
 
     <!-- Background Music -->
     <audio id="bgm" loop preload="auto">
@@ -596,78 +886,59 @@
         </div>
       </div>
 
-      <!-- =========================
-           SOUND TOGGLE BUTTON
-      ========================== -->
-
+      <!--   SOUND TOGGLE BUTTON -->
       <button class="sound-button" id="soundButton" aria-label="Toggle sound">
         🔊
       </button>
+      <div class="exit-modal" id="exitModal" aria-hidden="true">
+        <div
+          class="exit-modal-card"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="exitModalTitle"
+        >
+          <div class="exit-modal-icon">🚪</div>
+          <h2 id="exitModalTitle">KELUAR GAME?</h2>
+          <p>Yakin ingin keluar dari <strong>PAKDE ADVENTURE</strong>?</p>
+          <div class="exit-modal-actions">
+            <button class="exit-cancel-button" id="exitCancelButton">
+              BATAL
+            </button>
+            <button class="exit-confirm-button" id="exitConfirmButton">
+              KELUAR
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
 
     <script>
-      /* =====================================================
-         ELEMENTS
-      ===================================================== */
-
+      //  ELEMENTS
       const mainMenuScreen = document.getElementById("mainMenuScreen");
-
       const levelSelectScreen = document.getElementById("levelSelectScreen");
-
       const startGameButton = document.getElementById("startGameButton");
-
       const selectLevelButton = document.getElementById("selectLevelButton");
-
       const exitButton = document.getElementById("exitButton");
-
       const backButton = document.getElementById("backButton");
-
       const level1Button = document.getElementById("level1Button");
-
       const level2Button = document.getElementById("level2Button");
-
       const level2Status = document.getElementById("level2Status");
-
       const resetProgressButton = document.getElementById(
         "resetProgressButton",
       );
 
-      /* =====================================================
-         AUDIO ELEMENTS
-      ===================================================== */
-
+      //   AUDIO ELEMENTS
       const bgm = document.getElementById("bgm");
-
       const clickSound = document.getElementById("clickSound");
-
       const hoverSound = document.getElementById("hoverSound");
-
       const soundButton = document.getElementById("soundButton");
 
-      /* =====================================================
-         AUDIO SETTINGS
-      ===================================================== */
-
+      //  AUDIO SETTINGS
       let soundEnabled = localStorage.getItem("soundEnabled") !== "false";
-
-      /*
-        Volume BGM
-        0.0 = silent
-        1.0 = maximum
-      */
-
       bgm.volume = 0.35;
-
-      /*
-        Volume button sound
-      */
-
       clickSound.volume = 0.7;
 
-      /* =====================================================
-         UPDATE SOUND BUTTON
-      ===================================================== */
-
+      //   UPDATE SOUND BUTTON
       function updateSoundButton() {
         if (soundEnabled) {
           soundButton.textContent = "🔊";
@@ -676,56 +947,36 @@
         }
       }
 
-      /* =====================================================
-         START BGM
-      ===================================================== */
-
+      // START BGM
       function startBGM() {
         if (!soundEnabled) {
           return;
         }
 
-        bgm.play().catch(() => {
-          /*
-              Browser bisa memblokir autoplay.
-              BGM akan dicoba lagi ketika user
-              melakukan klik.
-            */
-        });
+        bgm.play().catch(() => {});
       }
 
-      /* =====================================================
-         PLAY CLICK SOUND
-      ===================================================== */
-
+      //  PLAY CLICK SOUND
       function playClickSound() {
         if (!soundEnabled) {
           return;
         }
 
         clickSound.currentTime = 0;
-
         clickSound.play().catch(() => {});
       }
 
-      /* =====================================================
-   PLAY HOVER SOUND
-===================================================== */
-
+      // PLAY HOVER SOUND
       function playHoverSound() {
         if (!soundEnabled) {
           return;
         }
 
         hoverSound.currentTime = 0;
-
         hoverSound.play().catch(() => {});
       }
 
-      /* =====================================================
-   HOVER SOUND UNTUK SEMUA BUTTON
-===================================================== */
-
+      // HOVER SOUND UNTUK SEMUA BUTTON
       const hoverButtons = document.querySelectorAll("button:not(:disabled)");
 
       hoverButtons.forEach((button) => {
@@ -734,20 +985,14 @@
         });
       });
 
-      /* =====================================================
-         SOUND TOGGLE
-      ===================================================== */
-
+      //   SOUND TOGGLE
       soundButton.addEventListener("click", (event) => {
         event.stopPropagation();
-
         soundEnabled = !soundEnabled;
-
         localStorage.setItem("soundEnabled", soundEnabled);
 
         if (soundEnabled) {
           startBGM();
-
           playClickSound();
         } else {
           bgm.pause();
@@ -756,10 +1001,7 @@
         updateSoundButton();
       });
 
-      /* =====================================================
-         START AUDIO AFTER FIRST USER INTERACTION
-      ===================================================== */
-
+      //  START AUDIO AFTER FIRST USER INTERACTION
       document.addEventListener(
         "click",
         () => {
@@ -770,78 +1012,75 @@
         { once: true },
       );
 
-      /* =====================================================
-         SCREEN NAVIGATION
-      ===================================================== */
-
+      // SCREEN NAVIGATION
       function showScreen(screenToShow) {
         mainMenuScreen.classList.remove("active");
-
         levelSelectScreen.classList.remove("active");
-
         screenToShow.classList.add("active");
       }
 
-      /* =====================================================
-         MULAI GAME
-      ===================================================== */
-
+      //  MULAI GAME
       startGameButton.addEventListener("click", () => {
         playClickSound();
-
         startBGM();
 
         window.location.href = "level1.html";
       });
 
-      /* =====================================================
-         PILIH LEVEL
-      ===================================================== */
-
+      //  PILIH LEVEL
       selectLevelButton.addEventListener("click", () => {
         playClickSound();
-
         startBGM();
-
         showScreen(levelSelectScreen);
       });
 
-      /* =====================================================
-         KEMBALI
-      ===================================================== */
+      //   KEMBALI
 
       backButton.addEventListener("click", () => {
         playClickSound();
-
         showScreen(mainMenuScreen);
       });
 
-      /* =====================================================
-         KELUAR
-      ===================================================== */
+      //  KELUAR
+      const exitModal = document.getElementById("exitModal");
+      const exitCancelButton = document.getElementById("exitCancelButton");
+      const exitConfirmButton = document.getElementById("exitConfirmButton");
+
+      function closeExitModal() {
+        exitModal.classList.remove("active");
+      }
 
       exitButton.addEventListener("click", () => {
         playClickSound();
+        exitModal.classList.add("active");
+      });
 
-        const confirmExit = confirm("Yakin ingin keluar dari game?");
+      exitCancelButton.addEventListener("click", () => {
+        playClickSound();
+        closeExitModal();
+      });
 
-        if (!confirmExit) {
-          return;
-        }
+      exitModal.addEventListener("click", (event) => {
+        if (event.target === exitModal) closeExitModal();
+      });
 
+      exitConfirmButton.addEventListener("click", () => {
+        playClickSound();
         bgm.pause();
-
         window.close();
-
         setTimeout(() => {
+          closeExitModal();
           alert("Silakan tutup tab ini secara manual untuk keluar.");
         }, 300);
       });
 
-      /* =====================================================
-         CHECK UNLOCK STATUS
-      ===================================================== */
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && exitModal.classList.contains("active")) {
+          closeExitModal();
+        }
+      });
 
+      // CHECK UNLOCK STATUS
       function updateLevelStatus() {
         const level2Unlocked =
           localStorage.getItem("level2Unlocked") === "true";
@@ -883,10 +1122,7 @@
         }
       }
 
-      /* =====================================================
-         LEVEL 1
-      ===================================================== */
-
+      //     LEVEL 1
       level1Button.addEventListener("click", () => {
         playClickSound();
 
@@ -895,10 +1131,7 @@
         window.location.href = "level1.html";
       });
 
-      /* =====================================================
-         LEVEL 2
-      ===================================================== */
-
+      //  LEVEL 2
       level2Button.addEventListener("click", () => {
         const level2Unlocked =
           localStorage.getItem("level2Unlocked") === "true";
@@ -910,16 +1143,11 @@
         }
 
         playClickSound();
-
         startBGM();
-
         window.location.href = "level2.html";
       });
 
-      /* =====================================================
-         RESET PROGRESS
-      ===================================================== */
-
+      // RESET PROGRESS
       resetProgressButton.addEventListener("click", () => {
         playClickSound();
 
@@ -936,12 +1164,8 @@
         updateLevelStatus();
       });
 
-      /* =====================================================
-         INITIALIZATION
-      ===================================================== */
-
+      //  INITIALIZATION
       updateLevelStatus();
-
       updateSoundButton();
     </script>
   </body>

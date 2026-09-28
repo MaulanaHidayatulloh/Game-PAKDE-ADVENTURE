@@ -7,7 +7,6 @@
 body {
   width: 100%;
   min-height: 100vh;
-  height: 100%;
   margin: 0;
   background: white;
   color: black;
@@ -29,9 +28,7 @@ body {
   overflow: hidden;
 }
 
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 .game-header {
   flex-shrink: 0;
   min-height: 65px;
@@ -65,9 +62,7 @@ body {
   font-size: 16px;
 }
 
-/* =========================
-   PAUSE BUTTON
-========================= */
+/* PAUSE BUTTON */
 .pause-button.hidden {
   display: none;
 }
@@ -97,9 +92,7 @@ body {
   transform: translate(4px, 4px);
 }
 
-/* =========================
-   PAUSE POPUP
-========================= */
+/*  PAUSE POPUP */
 .pause-overlay {
   z-index: 50;
 }
@@ -128,7 +121,6 @@ body {
   width: 100%;
   padding: 14px 20px;
   margin-top: 12px;
-
   font-family: inherit;
   font-size: 14px;
   font-weight: 900;
@@ -164,48 +156,33 @@ body {
   font-weight: 900;
 }
 
-/* =========================
-   CANVAS
-========================= */
+/* CANVAS */
 .canvas-container {
   position: relative;
-
   width: 100%;
   height: 100%;
   min-height: 0;
   flex: 1 1 auto;
-
   background: #fff;
-
   overflow: hidden;
-
   margin: 0;
 }
 
 canvas {
   display: block;
-
   width: 100%;
   height: 100%;
-
   image-rendering: pixelated;
 }
 
-/* =========================
-   OVERLAY
-========================= */
-
+/* OVERLAY */
 .overlay {
   position: absolute;
-
   inset: 0;
-
   background: rgba(3, 7, 18, 0.72);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   backdrop-filter: blur(3px);
 }
 
@@ -217,45 +194,31 @@ canvas {
   width: min(480px, 90%);
   border-radius: 25px;
   padding: 40px;
-
   text-align: center;
-
   background: #fff;
-
   border: 4px solid #000;
 }
 
 .pixel-title {
   color: #43e97b;
-
   font-size: clamp(30px, 5vw, 52px);
-
   font-weight: 900;
-
   letter-spacing: 4px;
-
   text-shadow: 4px 4px 0 #14532d;
-
   margin-bottom: 12px;
 }
 
 .level-title {
   color: #facc15;
-
   font-size: 20px;
-
   font-weight: bold;
-
   margin-bottom: 18px;
 }
 
 .description {
   color: #000;
-
   line-height: 1.7;
-
   font-size: 14px;
-
   margin-bottom: 28px;
 }
 
@@ -270,15 +233,10 @@ button {
 #mainMenuButton,
 #nextLevelButton {
   background: #43e97b;
-
   color: #052e16;
-
   padding: 16px 30px;
-
   font-size: 16px;
-
   border: 3px solid #166534;
-
   transition: 0.1s;
 }
 
@@ -291,21 +249,15 @@ button {
 
 .controls {
   margin-top: 30px;
-
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   gap: 8px;
-
   color: #000;
-
   font-size: 12px;
 }
 
 .controls span {
   color: #000;
-
   font-weight: bold;
 }
 
@@ -313,48 +265,33 @@ button {
   color: #000;
 }
 
-/* =========================
-   FINAL SCORE
-========================= */
+/*  FINAL SCORE */
 
 .final-score {
   color: #94a3b8;
-
   margin: 25px 0;
-
   font-size: 12px;
 }
 
 .final-score strong {
   display: block;
-
   margin-top: 5px;
-
   color: #facc15;
-
   font-size: 30px;
 }
 
-/* =========================
-   MOBILE CONTROLS
-========================= */
-
+/* MOBILE CONTROLS */
 .mobile-controls {
   display: none;
-
   position: fixed;
   left: 0;
   right: 0;
   bottom: max(16px, env(safe-area-inset-bottom));
-
   width: 100%;
   padding: 0 18px;
-
   justify-content: space-between;
   align-items: flex-end;
-
   z-index: 100;
-
   pointer-events: none;
 }
 
@@ -365,22 +302,17 @@ button {
 
 .move-buttons {
   display: flex;
-
   gap: 10px;
 }
 
 .mobile-controls button {
   width: 65px;
   height: 65px;
-
   background: rgba(31, 41, 55, 0.48);
-
   color: rgba(255, 255, 255, 0.92);
-
   border: 3px solid rgba(55, 65, 81, 0.62);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-
   font-size: 22px;
 }
 
@@ -393,29 +325,19 @@ button {
   height: 65px;
 }
 
-/* =========================
-   TIP
-========================= */
-
+/* TIP */
 .game-tip {
   flex-shrink: 0;
-
   text-align: center;
-
   margin-top: 10px;
-
   color: #64748b;
-
   font-size: 11px;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
-
-/* =====================================================
-   LAPTOP / SMALL DESKTOP
-===================================================== */
+/* LAPTOP / SMALL DESKTOP */
 @media (min-width: 769px) and (max-height: 800px) {
   .game-header {
     min-height: 48px;
@@ -428,7 +350,6 @@ button {
 
   .game-info {
     font-size: 9px;
-
     gap: 25px;
   }
 
@@ -444,7 +365,6 @@ button {
 @media (min-width: 769px) and (max-height: 700px) {
   .game-header {
     min-height: 42px;
-
     padding: 5px 14px;
   }
 
@@ -454,7 +374,6 @@ button {
 
   .game-info {
     gap: 20px;
-
     font-size: 8px;
   }
 
@@ -465,6 +384,7 @@ button {
   .game-tip {
     display: none;
   }
+
   .menu-card {
     padding: 25px 20px;
   }
@@ -475,8 +395,6 @@ button {
 }
 
 @media (max-width: 1024px) {
-  /* Mobile/tablet: never crop the game. The page may scroll when the
-     viewport ratio is different from the game's native 2:1 ratio. */
   body {
     min-height: 100vh;
     overflow: auto;
@@ -640,8 +558,6 @@ button {
   }
 }
 
-/* Landscape phone / tablet:
-   keep the canvas as the main full-height game area. */
 @media (max-width: 1024px) and (orientation: landscape) {
   .game-header {
     min-height: 44px;
@@ -672,20 +588,20 @@ button {
   }
 }
 
-/* =====================================================
-   FINAL MOBILE/TABLET NON-CROP OVERRIDE
-   The game keeps its native 2:1 canvas ratio. If the screen
-   is narrower/different in ratio, the page/container can scroll
-   instead of cutting any part of the game.
-===================================================== */
 @media (max-width: 1024px) {
-  /* Mobile/tablet: fill the screen width and height.
-     Vertical page scrolling is allowed, but horizontal scrolling is disabled. */
-  body {
+  html {
     width: 100%;
     min-width: 0;
     overflow-x: hidden;
+  }
+
+  body {
+    width: 100%;
+    min-width: 0;
+    min-height: 100dvh;
+    overflow-x: hidden;
     overflow-y: auto;
+    display: block;
   }
 
   .game-wrapper {
@@ -696,13 +612,22 @@ button {
     overflow: visible;
   }
 
+  .game-header {
+    position: relative;
+    z-index: 110;
+  }
+
   .canvas-container {
+    position: relative;
     width: 100%;
     max-width: 100%;
     height: 100dvh;
     min-height: 100dvh;
+    flex: none;
     overflow: hidden;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
   }
 
   .canvas-container canvas {
@@ -710,10 +635,37 @@ button {
     width: 100%;
     max-width: 100%;
     height: 100%;
-    max-height: none;
+    flex: 0 0 auto;
+  }
+
+  .canvas-container > .overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: 200;
+    padding: max(12px, env(safe-area-inset-top)) 12px
+      max(12px, env(safe-area-inset-bottom)) 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .canvas-container > .overlay .menu-card {
+    flex: 0 1 auto;
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .mobile-controls {
+    display: flex;
+    z-index: 210;
   }
 
   .mobile-controls button {
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
     background: rgba(31, 41, 55, 0.45);
     border-color: rgba(55, 65, 81, 0.58);
     color: rgba(255, 255, 255, 0.92);
@@ -723,5 +675,103 @@ button {
 
   .mobile-controls button:active {
     background: rgba(31, 41, 55, 0.62);
+  }
+}
+
+/* Compact popup for landscape phones/tablets. */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .game-header {
+    min-height: 44px;
+    padding: 4px 10px;
+  }
+
+  .game-logo {
+    font-size: 13px;
+  }
+
+  .game-info {
+    font-size: 7px;
+    gap: 12px;
+  }
+
+  .game-info strong {
+    font-size: 10px;
+  }
+
+  .canvas-container > .overlay {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .canvas-container > .overlay .menu-card {
+    width: min(520px, 82vw);
+    max-height: calc(100dvh - 16px);
+    padding: 16px 20px;
+    border-width: 3px;
+    border-radius: 18px;
+  }
+
+  .canvas-container > .overlay .pixel-title {
+    font-size: clamp(20px, 5vw, 34px);
+    margin-bottom: 6px;
+  }
+
+  .canvas-container > .overlay .level-title {
+    margin-bottom: 8px;
+    font-size: 15px;
+  }
+
+  .canvas-container > .overlay .description {
+    font-size: 10px;
+    line-height: 1.45;
+    margin-bottom: 12px;
+  }
+
+  .canvas-container > .overlay button {
+    padding: 10px 18px;
+    font-size: 12px;
+  }
+
+  .canvas-container > .overlay .controls {
+    margin-top: 12px;
+    font-size: 9px;
+    gap: 4px;
+  }
+
+  .canvas-container > .overlay .final-score {
+    margin: 10px 0;
+  }
+
+  .canvas-container > .overlay .final-score strong {
+    font-size: 22px;
+  }
+
+  .pause-card {
+    padding: 18px 22px;
+  }
+
+  .pause-description {
+    margin-bottom: 12px;
+  }
+
+  .pause-action-button,
+  .pause-menu-button {
+    padding: 10px 16px;
+    margin-top: 7px;
+  }
+
+  .pause-hint {
+    margin-top: 12px;
+    font-size: 8px;
+  }
+
+  .mobile-controls button {
+    width: 50px;
+    height: 50px;
+  }
+
+  #jumpBtn {
+    width: 62px;
+    height: 50px;
   }
 }

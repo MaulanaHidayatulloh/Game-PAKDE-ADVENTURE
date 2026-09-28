@@ -9,9 +9,7 @@ const GAME_HEIGHT = 600;
 canvas.width = GAME_WIDTH;
 canvas.height = GAME_HEIGHT;
 
-/* =========================
-   Main Menu Button
-========================= */
+// Main Menu Button
 const mainMenuButton = document.getElementById("mainMenuButton");
 
 if (mainMenuButton) {
@@ -20,9 +18,7 @@ if (mainMenuButton) {
   });
 }
 
-/* =========================
-   SOUND
-========================= */
+// SOUND
 const sounds = {
   enemy: new Audio("assets/enemy.mp3"),
   death: new Audio("assets/death.mp3"),
@@ -32,8 +28,6 @@ const sounds = {
   enemyNear: new Audio("assets/enemy-2.mp3"),
   background: new Audio("assets/backsong.mp3"),
   mushroom: new Audio("assets/mushroom.mp3"),
-
-  /* SCREEN / DEATH SOUNDS */
   startScreen: new Audio("assets/opening.mp3"),
   gameOver: new Audio("assets/defeat.mp3"),
   deathPowered: new Audio("assets/death_powered-up.mp3"),
@@ -111,18 +105,13 @@ function updateEnemyNearSound() {
   }
 }
 
-/* =========================================================
-   GAME STATE
-========================================================= */
-
+//  GAME STATE
 let gameRunning = false;
 let gameWon = false;
 let gamePaused = false;
-
 let score = 0;
 let coinsCollected = 0;
 let lives = 3;
-
 let cameraX = 0;
 let gameTime = 0;
 let lastTime = 0;
@@ -133,19 +122,13 @@ const animation = {
   coin: 0,
 };
 
-/* =========================================================
-   PHYSICS
-========================================================= */
-
+// PHYSICS
 const gravity = 0.7;
 const friction = 0.82;
 const maxSpeed = 6;
 const jumpPower = -14;
 
-/* =========================================================
-   INPUT
-========================================================= */
-
+// INPUT
 const keys = {
   left: false,
   right: false,
@@ -188,10 +171,7 @@ document.addEventListener("keyup", (e) => {
   }
 });
 
-/* =========================================================
-   MOBILE CONTROLS
-========================================================= */
-
+//  MOBILE CONTROLS
 function mobileButton(id, key) {
   const button = document.getElementById(id);
 
@@ -234,10 +214,7 @@ mobileButton("leftBtn", "left");
 mobileButton("rightBtn", "right");
 mobileButton("jumpBtn", "jump");
 
-/* =========================================================
-   PARTICLES
-========================================================= */
-
+//  PARTICLES
 const particles = [];
 
 function createParticle(x, y, options = {}) {
@@ -307,7 +284,6 @@ function createBlockParticles(x, y) {
 }
 
 /* MUSHROOM PARTICLES */
-
 function createMushroomParticles(x, y) {
   for (let i = 0; i < 12; i++) {
     createParticle(x, y, {
@@ -354,14 +330,10 @@ function drawParticles() {
   ctx.globalAlpha = 1;
 }
 
-/* =========================
-   PLAYER SPRITES
-========================= */
+// PLAYER SPRITES
 function loadSprite(path) {
   const image = new Image();
-
   image.src = path;
-
   return image;
 }
 
@@ -417,10 +389,7 @@ const playerSprites = {
   ],
 };
 
-/* =========================================================
-   ENEMY SPRITES
-========================================================= */
-
+// ENEMY SPRITES
 const enemySprites = {
   idle: [loadSprite("assets/enemy/Idle.png")],
 
@@ -441,9 +410,7 @@ const enemySprites = {
   ],
 };
 
-/* =========================================================
-   PLAYER
-========================================================= */
+// PLAYER
 const player = {
   x: 120,
   y: 400,
@@ -516,7 +483,7 @@ const player = {
     }
 
     this.hurt = true;
-    this.hurtTimer = 90; // sekitar 1,5 detik @ 60 FPS
+    this.hurtTimer = 90;
     this.hurtFrame = 0;
     this.hurtFrameTimer = 0;
 
@@ -533,7 +500,6 @@ const player = {
     this.hurtTimer--;
     this.hurtFrameTimer++;
 
-    /* Ganti frame hurt setiap 12 frame */
     if (this.hurtFrameTimer >= 12) {
       this.hurtFrameTimer = 0;
 
@@ -564,14 +530,12 @@ const player = {
     this.width = this.poweredWidth;
     this.height = this.poweredHeight;
 
-    /* Tetap berdiri di tanah yang sama */
     this.y -= this.height - oldHeight;
 
     createMushroomParticles(this.x + this.width / 2, this.y + this.height / 2);
   },
 
   update() {
-    /* Selama animasi hurt, player tidak bisa bergerak */
     if (this.hurt) {
       this.updateHurtAnimation();
       return;
@@ -580,7 +544,6 @@ const player = {
     this.previousGrounded = this.grounded;
 
     /* INVINCIBILITY TIMER */
-
     if (this.invincible) {
       this.invincibleTimer--;
 
@@ -590,10 +553,7 @@ const player = {
       }
     }
 
-    /* -------------------------
-       HORIZONTAL MOVEMENT
-    ------------------------- */
-
+    //  HORIZONTAL MOVEMENT
     if (keys.left) {
       this.velocityX -= this.speed;
       this.facing = -1;
@@ -606,53 +566,33 @@ const player = {
 
     this.velocityX = Math.max(-maxSpeed, Math.min(maxSpeed, this.velocityX));
 
-    /* -------------------------
-       JUMP
-    ------------------------- */
+    //  JUMP
     if (keys.jumpPressed && this.grounded) {
       this.velocityY = jumpPower;
-
       this.grounded = false;
-
       playSound(sounds.jump);
-
       createDustParticles(this.x + this.width / 2, this.y + this.height);
     }
 
     keys.jumpPressed = false;
 
-    /* -------------------------
-       GRAVITY
-    ------------------------- */
-
+    // GRAVITY
     this.velocityY += gravity;
 
     if (this.velocityY > 15) {
       this.velocityY = 15;
     }
 
-    /* -------------------------
-       MOVE X
-    ------------------------- */
-
+    // MOVE X
     this.x += this.velocityX;
-
     this.horizontalCollision();
 
-    /* -------------------------
-       MOVE Y
-    ------------------------- */
-
+    // MOVE Y
     this.y += this.velocityY;
-
     this.grounded = false;
-
     this.verticalCollision();
 
-    /* -------------------------
-       WORLD BOUNDARY
-    ------------------------- */
-
+    // WORLD BOUNDARY
     if (this.x < 0) {
       this.x = 0;
       this.velocityX = 0;
@@ -663,44 +603,26 @@ const player = {
       this.velocityX = 0;
     }
 
-    /* -------------------------
-       FALLING
-    ------------------------- */
-
+    // FALLING
     if (this.y > GAME_HEIGHT + 150) {
       loseLife();
     }
 
-    /* -------------------------
-       LANDING
-    ------------------------- */
-
+    // LANDING
     if (this.grounded && !this.previousGrounded && this.velocityY >= 0) {
       createDustParticles(this.x + this.width / 2, this.y + this.height);
     }
 
-    /* -------------------------
-       ANIMATION
-    ------------------------- */
-
+    //  ANIMATION
     this.updateAnimation();
 
-    /* -------------------------
-       CAMERA
-    ------------------------- */
-
+    //  CAMERA
     const targetCamera = this.x - GAME_WIDTH * 0.35;
-
     cameraX += (targetCamera - cameraX) * 0.08;
-
     cameraX = Math.max(0, Math.min(LEVEL_WIDTH - GAME_WIDTH, cameraX));
   },
 
   updateAnimation() {
-    /*
-     Animasi berjalan
-  */
-
     if (this.grounded && Math.abs(this.velocityX) > 0.3) {
       this.animationTimer += Math.abs(this.velocityX);
 
@@ -710,28 +632,19 @@ const player = {
         this.animationTimer = 0;
       }
     } else if (!this.grounded) {
-      /*
-     Animasi udara
-  */
       this.animationTimer += 1;
 
       if (this.animationTimer > 6) {
         this.animationFrame++;
-
         this.animationTimer = 0;
       }
     } else {
-      /*
-     Diam
-  */
       this.animationTimer = 0;
       this.animationFrame = 0;
     }
   },
 
   horizontalCollision() {
-    /* NORMAL PLATFORMS */
-
     platforms.forEach((platform) => {
       if (checkCollision(this, platform)) {
         if (this.velocityX > 0) {
@@ -743,8 +656,6 @@ const player = {
         this.velocityX = 0;
       }
     });
-
-    /* QUESTION BLOCKS */
 
     questionBlocks.forEach((block) => {
       if (checkCollision(this, block)) {
@@ -760,8 +671,6 @@ const player = {
   },
 
   verticalCollision() {
-    /* NORMAL PLATFORMS */
-
     platforms.forEach((platform) => {
       if (checkCollision(this, platform)) {
         if (this.velocityY > 0) {
@@ -777,8 +686,6 @@ const player = {
         }
       }
     });
-
-    /* QUESTION BLOCKS */
 
     questionBlocks.forEach((block) => {
       if (checkCollision(this, block)) {
@@ -803,10 +710,6 @@ const player = {
     const screenX = Math.floor(this.x - cameraX);
     const screenY = Math.floor(this.y);
 
-    /*
-     INVINCIBLE BLINK
-  */
-
     if (
       !this.hurt &&
       this.invincible &&
@@ -814,9 +717,6 @@ const player = {
     ) {
       return;
     }
-    /*
-     SHADOW
-  */
 
     if (this.grounded) {
       ctx.fillStyle = "rgba(0,0,0,0.35)";
@@ -824,105 +724,47 @@ const player = {
       ctx.fillRect(screenX + 4, screenY + this.height + 2, this.width - 8, 4);
     }
 
-    /*
-     PILIH ANIMASI
-  */
-
     let frames;
-
-    /*
-     HURT / DEATH
-  */
 
     if (this.hurt) {
       frames = playerSprites.hurt;
     } else if (this.poweredUp) {
       frames = playerSprites.powered;
     } else if (this.velocityY < -1) {
-      /*
-     JUMP
-  */
       frames = playerSprites.jump;
     } else if (this.velocityY > 1 && !this.grounded) {
-      /*
-     FALL
-  */
       frames = playerSprites.fall;
     } else if (Math.abs(this.velocityX) > 0.3 && this.facing === 1) {
-      /*
-     WALK RIGHT
-  */
       frames = playerSprites.walkRight;
     } else if (Math.abs(this.velocityX) > 0.3 && this.facing === -1) {
-      /*
-     WALK LEFT
-  */
       frames = playerSprites.walkLeft;
     } else {
-      /*
-     IDLE
-  */
       frames = playerSprites.idle;
     }
-
-    /*
-     FRAME INDEX
-  */
 
     let frameIndex = this.hurt
       ? Math.min(this.hurtFrame, frames.length - 1)
       : this.animationFrame % frames.length;
 
-    /*
-     Ambil frame
-  */
-
     const sprite = frames[frameIndex];
-
-    /*
-     Kalau gambar belum selesai loading,
-     jangan gambar dulu.
-  */
 
     if (!sprite || !sprite.complete || sprite.naturalWidth === 0) {
       return;
     }
 
-    /*
-     =========================
-     SPRITE SIZE
-     =========================
-  */
-
+    // SPRITE SIZE
     let spriteWidth = 42;
     let spriteHeight = 84;
-
-    /*
-     POWERED UP sedikit lebih besar
-  */
 
     if (this.poweredUp) {
       spriteWidth = 48;
       spriteHeight = 96;
     }
 
-    /*
-     Posisi sprite.
-
-     Bagian bawah sprite dibuat
-     sejajar dengan kaki / hitbox player.
-  */
-
     const drawX = screenX + this.width / 2 - spriteWidth / 2;
-
     const drawY = screenY + this.height - spriteHeight;
 
-    /*
-     =========================
-     DRAW SPRITE
-     =========================
-  */
-
+    // /DRAW SPRITE
     ctx.imageSmoothingEnabled = false;
 
     ctx.drawImage(
@@ -935,10 +777,7 @@ const player = {
   },
 };
 
-/* =========================================================
-   LEVEL
-========================================================= */
-
+// / LEVEL
 const LEVEL_WIDTH = 5200;
 
 const platforms = [
@@ -985,10 +824,7 @@ const platforms = [
 ];
 
 const questionBlocks = [
-  /* =======================================================
-     BLOCK 1
-     ======================================================= */
-
+  // BLOCK 1
   {
     x: 312,
     y: 405,
@@ -1003,10 +839,7 @@ const questionBlocks = [
     coinLife: 0,
   },
 
-  /* =======================================================
-     BLOCK 2
-     ======================================================= */
-
+  //  BLOCK 2
   {
     x: 1450,
     y: 150,
@@ -1021,10 +854,7 @@ const questionBlocks = [
     coinLife: 0,
   },
 
-  /* =======================================================
-     BLOCK 3
-     ======================================================= */
-
+  //  BLOCK 3
   {
     x: 4280,
     y: 250,
@@ -1040,10 +870,7 @@ const questionBlocks = [
   },
 ];
 
-/* =========================================================
-   POWER-UP MUSHROOM
-========================================================= */
-
+// POWER-UP MUSHROOM
 const mushrooms = [
   {
     x: 0,
@@ -1064,14 +891,8 @@ const mushrooms = [
   },
 ];
 
-/* =========================================================
-   SPAWN MUSHROOM
-========================================================= */
+//  SPAWN MUSHROOM
 function spawnMushroom(block) {
-  /*
-     Mushroom hanya berasal dari Question Block kedua.
-  */
-
   if (block !== questionBlocks[1]) {
     return;
   }
@@ -1083,10 +904,6 @@ function spawnMushroom(block) {
   }
 
   mushroom.x = block.x + block.width / 2 - mushroom.width / 2;
-
-  /*
-     Mushroom muncul dari atas block.
-  */
 
   mushroom.y = block.y - mushroom.height;
 
@@ -1100,20 +917,14 @@ function spawnMushroom(block) {
   mushroom.grounded = false;
 }
 
-/* =========================================================
-   UPDATE MUSHROOM
-========================================================= */
-
+// UPDATE MUSHROOM
 function updateMushrooms() {
   mushrooms.forEach((mushroom) => {
     if (!mushroom.active || mushroom.collected) {
       return;
     }
 
-    /* --------------------------------
-       HORIZONTAL MOVEMENT
-    -------------------------------- */
-
+    //  HORIZONTAL MOVEMENT
     mushroom.x += mushroom.velocityX;
 
     let horizontalBlocked = false;
@@ -1150,10 +961,7 @@ function updateMushrooms() {
       mushroom.velocityX *= -1;
     }
 
-    /* --------------------------------
-       GRAVITY
-    -------------------------------- */
-
+    // GRAVITY
     mushroom.velocityY += gravity;
 
     if (mushroom.velocityY > 12) {
@@ -1161,13 +969,9 @@ function updateMushrooms() {
     }
 
     mushroom.y += mushroom.velocityY;
-
     mushroom.grounded = false;
 
-    /* --------------------------------
-       VERTICAL COLLISION
-    -------------------------------- */
-
+    // VERTICAL COLLISION
     platforms.forEach((platform) => {
       if (checkCollision(mushroom, platform)) {
         if (mushroom.velocityY > 0) {
@@ -1200,10 +1004,7 @@ function updateMushrooms() {
       }
     });
 
-    /* --------------------------------
-       WORLD BOUNDARY
-    -------------------------------- */
-
+    // WORLD BOUNDARY
     if (mushroom.x < 0) {
       mushroom.x = 0;
       mushroom.velocityX = Math.abs(mushroom.velocityX);
@@ -1215,28 +1016,19 @@ function updateMushrooms() {
       mushroom.velocityX = -Math.abs(mushroom.velocityX);
     }
 
-    /* --------------------------------
-       COLLECT BY PLAYER
-    -------------------------------- */
-
+    //  COLLECT BY PLAYER
     if (checkCollision(player, mushroom)) {
       collectMushroom(mushroom);
     }
 
-    /* --------------------------------
-       FALL INTO VOID
-    -------------------------------- */
-
+    //  FALL INTO VOID
     if (mushroom.y > GAME_HEIGHT + 100) {
       mushroom.active = false;
     }
   });
 }
 
-/* =========================================================
-   COLLECT MUSHROOM
-========================================================= */
-
+// COLLECT MUSHROOM
 function collectMushroom(mushroom) {
   if (mushroom.collected) {
     return;
@@ -1259,10 +1051,7 @@ function collectMushroom(mushroom) {
   updateUI();
 }
 
-/* =========================================================
-   DRAW MUSHROOM
-========================================================= */
-
+//  DRAW MUSHROOM
 function drawMushrooms() {
   mushrooms.forEach((mushroom) => {
     if (!mushroom.active || mushroom.collected) {
@@ -1272,8 +1061,6 @@ function drawMushrooms() {
     const screenX = Math.floor(mushroom.x - cameraX);
 
     const screenY = Math.floor(mushroom.y);
-
-    /* SHADOW */
 
     if (mushroom.grounded) {
       ctx.fillStyle = "rgba(0,0,0,0.18)";
@@ -1286,65 +1073,40 @@ function drawMushrooms() {
       );
     }
 
-    /* =================================================
-       STEM
-    ================================================= */
+    //  STEM
 
     ctx.fillStyle = "#fef3c7";
 
     ctx.fillRect(screenX + 9, screenY + 18, 20, 17);
 
-    /* STEM SHADOW */
-
     ctx.fillStyle = "#d6d3d1";
 
     ctx.fillRect(screenX + 23, screenY + 19, 6, 15);
 
-    /* =================================================
-       RED CAP
-    ================================================= */
-
+    //  RED CAP
     ctx.fillStyle = "#dc2626";
-
     ctx.fillRect(screenX + 4, screenY + 8, 30, 15);
-
     ctx.fillRect(screenX + 8, screenY + 4, 22, 7);
-
     ctx.fillRect(screenX + 13, screenY + 1, 12, 5);
 
     /* CAP DARK BOTTOM */
-
     ctx.fillStyle = "#991b1b";
-
     ctx.fillRect(screenX + 7, screenY + 20, 26, 5);
 
-    /* =================================================
-       WHITE SPOTS
-    ================================================= */
-
+    // WHITE SPOTS
     ctx.fillStyle = "#ffffff";
-
     ctx.fillRect(screenX + 8, screenY + 7, 7, 7);
-
     ctx.fillRect(screenX + 23, screenY + 6, 7, 7);
-
     ctx.fillRect(screenX + 16, screenY + 14, 7, 6);
 
-    /* =================================================
-       OUTLINE
-    ================================================= */
-
+    //  OUTLINE
     ctx.strokeStyle = "#7f1d1d";
-
     ctx.lineWidth = 2;
-
     ctx.strokeRect(screenX + 4, screenY + 8, 30, 17);
   });
 }
 
-/* =========================================================
-   QUESTION BLOCK HIT
-========================================================= */
+// QUESTION BLOCK HIT
 function hitQuestionBlock(block) {
   if (block.hit) {
     return;
@@ -1355,14 +1117,10 @@ function hitQuestionBlock(block) {
   block.offsetY = -8;
   block.velocityY = -5;
 
-  // ==========================================
   // BLOCK KEDUA = MUSHROOM
-  // ==========================================
   if (block === questionBlocks[1]) {
     spawnMushroom(block);
-
     score += 1000;
-
     createBlockParticles(block.x + block.width / 2, block.y + block.height / 2);
 
     updateUI();
@@ -1370,9 +1128,7 @@ function hitQuestionBlock(block) {
     return;
   }
 
-  // ==========================================
   // BLOCK 1 & 3 = COIN
-  // ==========================================
   block.coin = true;
   block.coinY = block.y - 10;
   block.coinVelocityY = -9;
@@ -1390,14 +1146,9 @@ function hitQuestionBlock(block) {
   updateUI();
 }
 
-/* =========================================================
-   UPDATE QUESTION BLOCKS
-========================================================= */
-
+// UPDATE QUESTION BLOCKS
 function updateQuestionBlocks() {
   questionBlocks.forEach((block) => {
-    /* BLOCK BOUNCE */
-
     if (block.offsetY !== 0 || block.velocityY !== 0) {
       block.offsetY += block.velocityY;
 
@@ -1409,13 +1160,9 @@ function updateQuestionBlocks() {
       }
     }
 
-    /* BONUS COIN */
-
     if (block.coin) {
       block.coinY += block.coinVelocityY;
-
       block.coinVelocityY += 0.45;
-
       block.coinLife--;
 
       if (block.coinLife <= 0) {
@@ -1425,9 +1172,7 @@ function updateQuestionBlocks() {
   });
 }
 
-/* =========================================================
-   COINS
-========================================================= */
+//  COINS
 const coins = [
   { x: 300, y: 370, collected: false },
   { x: 350, y: 370, collected: false },
@@ -1497,10 +1242,7 @@ function updateCoins() {
   });
 }
 
-/* =========================================================
-   ENEMIES
-========================================================= */
-
+// ENEMIES
 const enemies = [
   {
     x: 650,
@@ -1569,11 +1311,7 @@ function updateEnemies() {
       return;
     }
 
-    /* ==========================================
-       JEDA SEBENTAR DI UJUNG PATROL
-       (mentok kiri/kanan → diam ~1.5 detik)
-    ========================================== */
-
+    // JEDA SEBENTAR DI UJUNG PATROL
     if (enemy.pauseTimer === undefined) {
       enemy.pauseTimer = 0;
     }
@@ -1588,25 +1326,18 @@ function updateEnemies() {
       if (enemy.x <= enemy.minX || enemy.x + enemy.width >= enemy.maxX) {
         enemy.velocityX *= -1;
 
-        /* 90 frame ≈ 1.5 detik pada 60fps */
         enemy.pauseTimer = 90;
       }
     }
 
     if (checkCollision(player, enemy)) {
-      /* ==========================================
-         SEDANG INVINCIBLE
-         Jangan lakukan apa-apa
-      ========================================== */
-
+      //   SEDANG INVINCIBLE
       if (player.invincible) {
         return;
       }
 
       const playerBottom = player.y + player.height;
-
       const enemyTop = enemy.y;
-
       const stomping = player.velocityY > 0 && playerBottom <= enemyTop + 18;
 
       if (stomping) {
@@ -1625,14 +1356,7 @@ function updateEnemies() {
 
         updateUI();
       } else {
-        /* ==========================================
-           BIG PLAYER TERKENA ENEMY
-           → KECIL
-           → INVINCIBLE 3 DETIK
-        ========================================== */
-
         if (player.poweredUp) {
-          /* BIG PLAYER TERKENA ENEMY */
           playSound(sounds.deathPowered);
 
           const playerBottom = player.y + player.height;
@@ -1642,12 +1366,10 @@ function updateEnemies() {
           player.width = player.normalWidth;
           player.height = player.normalHeight;
 
-          /* Tetap di posisi yang sama */
           player.y = playerBottom - player.height;
 
           player.velocityX = 0;
 
-          /* 180 frame ≈ 3 detik */
           player.invincible = true;
           player.invincibleTimer = 180;
 
@@ -1658,12 +1380,6 @@ function updateEnemies() {
 
           updateUI();
         } else {
-          /* ==========================================
-             PLAYER NORMAL + TIDAK INVINCIBLE
-             → KEHILANGAN NYAWA
-          ========================================== */
-
-          /* Mati terkena musuh → mainkan animasi hurt dulu */
           loseLife(true);
         }
       }
@@ -1671,9 +1387,7 @@ function updateEnemies() {
   });
 }
 
-/* =========================================================
-   FINISH
-========================================================= */
+// FINISH
 const finish = {
   x: 5000,
   y: 330,
@@ -1683,9 +1397,7 @@ const finish = {
 
 const checkpoint = { x: 2700, y: 430, width: 30, height: 100, active: false };
 
-/* =========================================================
-   COLLISION
-========================================================= */
+// COLLISION
 function checkCollision(a, b) {
   return (
     a.x < b.x + b.width &&
@@ -1695,10 +1407,7 @@ function checkCollision(a, b) {
   );
 }
 
-/* =========================================================
-   FINISH CHECK
-========================================================= */
-
+// FINISH CHECK
 function checkFinish() {
   const finishBox = {
     x: finish.x,
@@ -1722,10 +1431,7 @@ function checkCheckpoint() {
   }
 }
 
-/* =========================================================
-   PAUSE SYSTEM
-========================================================= */
-
+// PAUSE SYSTEM
 function showPauseScreen() {
   const pauseScreen = document.getElementById("pauseScreen");
 
@@ -1749,7 +1455,6 @@ function updatePauseButtonVisibility() {
     return;
   }
 
-  /* Tombol pause hanya tampil ketika gameplay sedang aktif. */
   pauseButton.classList.toggle("hidden", !gameRunning);
 }
 
@@ -1805,12 +1510,7 @@ function togglePause() {
   }
 }
 
-/* =========================================================
-   MOBILE / TABLET BACK BUTTON
-   Tekan tombol Back / gesture Back saat game berjalan
-   -> tampilkan Pause Screen, bukan keluar dari game.
-========================================================= */
-
+// MOBILE / TABLET BACK BUTTON
 let pauseHistoryGuard = false;
 
 function activatePauseHistoryGuard() {
@@ -1826,25 +1526,16 @@ window.addEventListener("popstate", () => {
   if (gameRunning) {
     pauseGame();
 
-    /*
-       Masukkan kembali state supaya tombol Back berikutnya
-       tidak langsung meninggalkan halaman.
-    */
     history.pushState({ gamePauseGuard: true }, "", window.location.href);
     return;
   }
 
-  /*
-     Kalau sedang pause, tetap berada di halaman game.
-  */
   if (gamePaused) {
     history.pushState({ gamePauseGuard: true }, "", window.location.href);
   }
 });
 
-/* =========================================================
-   LOSE LIFE
-========================================================= */
+// LOSE LIFE
 function loseLife(showHurtAnimation = false) {
   if (!gameRunning || player.hurt) {
     return;
@@ -1861,10 +1552,6 @@ function loseLife(showHurtAnimation = false) {
 
   updateUI();
 
-  /*
-     Kalau mati karena terkena musuh,
-     tampilkan animasi hurt terlebih dahulu.
-  */
   if (showHurtAnimation) {
     player.startHurtAnimation();
     return;
@@ -1873,10 +1560,7 @@ function loseLife(showHurtAnimation = false) {
   finishPlayerDeath();
 }
 
-/* =========================================================
-   SELESAI ANIMASI KEMATIAN
-========================================================= */
-
+// SELESAI ANIMASI KEMATIAN
 function finishPlayerDeath() {
   if (lives <= 0) {
     gameRunning = false;
@@ -1899,7 +1583,6 @@ function finishPlayerDeath() {
       gameOverScreen.classList.remove("hidden");
     }
 
-    /* STOP START SCREEN SOUND + PLAY GAME OVER SOUND */
     stopStartScreenSound();
     playSound(sounds.gameOver);
   } else {
@@ -1931,10 +1614,7 @@ function finishPlayerDeath() {
   }
 }
 
-/* =========================================================
-   WIN GAME
-========================================================= */
-
+// WIN GAME
 function winGame() {
   if (gameWon) {
     return;
@@ -1968,12 +1648,8 @@ function winGame() {
   }
 }
 
-/* =========================================================
-   RESET GAME
-========================================================= */
-
+// RESET GAME
 function resetGame() {
-  /* STOP SCREEN SOUNDS */
   stopStartScreenSound();
   stopSound(sounds.gameOver);
   stopSound(sounds.deathPowered);
@@ -1983,76 +1659,48 @@ function resetGame() {
   gameRunning = true;
   gameWon = false;
   gamePaused = false;
-
   hidePauseScreen();
   activatePauseHistoryGuard();
-
   checkpoint.active = false;
-
   sounds.background.currentTime = 0;
   sounds.background.play().catch(() => {});
-
   score = 0;
   coinsCollected = 0;
   lives = 3;
-
   cameraX = 0;
   gameTime = 0;
-
   particles.length = 0;
-
   player.reset();
-
-  /* RESET COINS */
 
   coins.forEach((coin) => {
     coin.collected = false;
   });
 
-  /* RESET ENEMIES */
-
   enemies.forEach((enemy, index) => {
     enemy.alive = true;
-
     enemy.animationTimer = 0;
-
     const startingPositions = [650, 1180, 2100, 3000, 4050];
-
     enemy.x = startingPositions[index];
-
     enemy.velocityX = Math.abs(enemy.velocityX);
   });
 
-  /* RESET QUESTION BLOCKS */
-
   questionBlocks.forEach((block) => {
     block.hit = false;
-
     block.offsetY = 0;
-
     block.velocityY = 0;
-
     block.coin = false;
-
     block.coinY = 0;
-
     block.coinVelocityY = 0;
-
     block.coinLife = 0;
   });
-
-  /* RESET MUSHROOM */
 
   mushrooms.forEach((mushroom) => {
     mushroom.x = 0;
     mushroom.y = 0;
-
     mushroom.velocityX = 2.2;
     mushroom.velocityY = 0;
-
     mushroom.active = false;
     mushroom.collected = false;
-
     mushroom.grounded = false;
   });
 
@@ -2062,17 +1710,11 @@ function resetGame() {
   updatePauseButtonVisibility();
 }
 
-/* =========================================================
-   UI
-========================================================= */
-
+//  UI
 function updateUI() {
   const scoreElement = document.getElementById("score");
-
   const coinsElement = document.getElementById("coins");
-
   const livesElement = document.getElementById("lives");
-
   if (scoreElement) {
     scoreElement.textContent = score;
   }
@@ -2098,47 +1740,30 @@ function hideScreens() {
   });
 }
 
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
+// BACKGROUND
 const backgroundImage = loadSprite("assets/background_level1.png");
 
 function drawBackground() {
   if (backgroundImage.complete && backgroundImage.naturalWidth > 0) {
-    /* IMAGE BACKGROUND */
-
     ctx.drawImage(backgroundImage, 0, 0, GAME_WIDTH, GAME_HEIGHT);
   } else {
-    /* FALLBACK SKY (while image is still loading) */
-
     const sky = ctx.createLinearGradient(0, 0, 0, GAME_HEIGHT);
-
     sky.addColorStop(0, "#38bdf8");
     sky.addColorStop(1, "#bae6fd");
-
     ctx.fillStyle = sky;
-
     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   }
 }
 
 function drawCloud(x, y) {
   ctx.fillStyle = "rgba(255,255,255,0.8)";
-
   ctx.fillRect(x, y + 10, 100, 30);
-
   ctx.fillRect(x + 20, y, 35, 30);
-
   ctx.fillRect(x + 45, y - 8, 40, 38);
-
   ctx.fillRect(x + 70, y + 5, 35, 30);
 }
 
-/* =========================================================
-   DRAW PLATFORMS - LEVEL 1
-   TEMA: TAMAN KOTA / AREA MONAS
-========================================================= */
+//  DRAW PLATFORMS - LEVEL 1
 function drawPlatforms() {
   platforms.forEach((platform) => {
     const screenX = Math.floor(platform.x - cameraX);
@@ -2147,35 +1772,17 @@ function drawPlatforms() {
     const width = platform.width;
     const height = platform.height;
 
-    /* =====================================================
-       SHADOW
-    ===================================================== */
-
     ctx.fillStyle = "rgba(0, 0, 0, 0.18)";
-
     ctx.fillRect(screenX + 4, y + height, width - 8, 5);
 
-    /* =====================================================
-       BAGIAN BAWAH - TANAH TAMAN
-    ===================================================== */
-
     ctx.fillStyle = "#8b5a2b";
-
     ctx.fillRect(screenX, y + 8, width, Math.max(0, height - 8));
-
-    /* =====================================================
-       LAPISAN TANAH GELAP
-    ===================================================== */
 
     ctx.fillStyle = "#70451f";
 
     if (height > 20) {
       ctx.fillRect(screenX, y + 20, width, Math.max(0, height - 20));
     }
-
-    /* =====================================================
-       POLA TANAH PIXEL
-    ===================================================== */
 
     ctx.fillStyle = "#5f3b1f";
 
@@ -2189,23 +1796,13 @@ function drawPlatforms() {
       }
     }
 
-    /* =====================================================
-       RUMPUT / TEPI HIJAU
-    ===================================================== */
-
     ctx.fillStyle = "#15803d";
 
     ctx.fillRect(screenX, y, width, 8);
 
-    /* Rumput bagian atas lebih terang */
-
     ctx.fillStyle = "#22c55e";
 
     ctx.fillRect(screenX, y, width, 4);
-
-    /* =====================================================
-       RUMPUT PIXEL DI TEPI
-    ===================================================== */
 
     ctx.fillStyle = "#16a34a";
 
@@ -2216,10 +1813,6 @@ function drawPlatforms() {
         ctx.fillRect(screenX + x + 8, y - 2, 4, 3);
       }
     }
-
-    /* =====================================================
-       DETAIL TANAH TERANG
-    ===================================================== */
 
     ctx.fillStyle = "#a16207";
 
@@ -2233,10 +1826,6 @@ function drawPlatforms() {
       }
     }
 
-    /* =====================================================
-       BATU KECIL / PAVING PIXEL
-    ===================================================== */
-
     ctx.fillStyle = "#d6b27a";
 
     for (let x = 28; x < width - 8; x += 55) {
@@ -2244,10 +1833,6 @@ function drawPlatforms() {
         ctx.fillRect(screenX + x, y + 12, 5, 4);
       }
     }
-
-    /* =====================================================
-       GARIS BAWAH
-    ===================================================== */
 
     ctx.fillStyle = "#6b4423";
 
@@ -2257,37 +1842,27 @@ function drawPlatforms() {
   });
 }
 
-/* =========================================================
-   DRAW QUESTION BLOCKS
-========================================================= */
+//  DRAW QUESTION BLOCKS
 function drawQuestionBlocks() {
   questionBlocks.forEach((block) => {
     const screenX = Math.floor(block.x - cameraX);
 
     const screenY = Math.floor(block.y + block.offsetY);
 
-    /* SHADOW */
-
     ctx.fillStyle = "rgba(0,0,0,0.18)";
 
     ctx.fillRect(screenX + 4, screenY + block.height + 3, block.width - 8, 4);
-
-    /* UNUSED */
 
     if (!block.hit) {
       ctx.fillStyle = "#f59e0b";
 
       ctx.fillRect(screenX, screenY, block.width, block.height);
 
-      /* HIGHLIGHT */
-
       ctx.fillStyle = "#fcd34d";
 
       ctx.fillRect(screenX + 4, screenY + 4, block.width - 8, 5);
 
       ctx.fillRect(screenX + 4, screenY + 4, 5, block.height - 8);
-
-      /* BORDER */
 
       ctx.strokeStyle = "#92400e";
 
@@ -2300,36 +1875,22 @@ function drawQuestionBlocks() {
         block.height - 4,
       );
 
-      /* QUESTION MARK */
-
       ctx.fillStyle = "#ffffff";
-
       ctx.font = "bold 30px Arial";
-
       ctx.textAlign = "center";
-
       ctx.textBaseline = "middle";
-
       ctx.fillText(
         "?",
         screenX + block.width / 2,
         screenY + block.height / 2 + 1,
       );
     } else {
-      /* USED BLOCK */
-
       ctx.fillStyle = "#9ca3af";
-
       ctx.fillRect(screenX, screenY, block.width, block.height);
-
       ctx.fillStyle = "#d1d5db";
-
       ctx.fillRect(screenX + 4, screenY + 4, block.width - 8, 5);
-
       ctx.strokeStyle = "#4b5563";
-
       ctx.lineWidth = 4;
-
       ctx.strokeRect(
         screenX + 2,
         screenY + 2,
@@ -2338,37 +1899,23 @@ function drawQuestionBlocks() {
       );
 
       ctx.fillStyle = "#6b7280";
-
       ctx.fillRect(screenX + 14, screenY + 14, 16, 16);
     }
 
-    /* BONUS COIN */
-
     if (block.coin) {
       const coinX = block.x + block.width / 2 - cameraX;
-
       const coinY = block.coinY;
-
       const scale = 0.75 + Math.abs(Math.sin(gameTime * 0.25)) * 0.25;
 
       ctx.save();
-
       ctx.translate(coinX, coinY);
-
       ctx.scale(scale, 1);
-
       ctx.fillStyle = "#facc15";
-
       ctx.fillRect(-8, -12, 16, 24);
-
       ctx.fillStyle = "#fde68a";
-
       ctx.fillRect(-4, -9, 5, 17);
-
       ctx.fillStyle = "#ca8a04";
-
       ctx.fillRect(4, -7, 4, 15);
-
       ctx.restore();
     }
   });
@@ -2377,10 +1924,7 @@ function drawQuestionBlocks() {
   ctx.textBaseline = "alphabetic";
 }
 
-/* =========================================================
-   DRAW COINS
-========================================================= */
-
+//   DRAW COINS
 function drawCoins() {
   coins.forEach((coin) => {
     if (coin.collected) {
@@ -2388,47 +1932,30 @@ function drawCoins() {
     }
 
     const bob = Math.sin(gameTime * 0.12 + coin.x) * 5;
-
     const rotation = Math.abs(Math.sin(gameTime * 0.1 + coin.x));
-
     const screenX = coin.x - cameraX;
-
     const screenY = coin.y + bob;
 
     ctx.save();
-
     ctx.translate(screenX, screenY);
-
     ctx.scale(rotation * 0.6 + 0.4, 1);
-
-    /* GLOW */
-
     ctx.fillStyle = "rgba(250,204,21,0.2)";
-
     ctx.fillRect(-12, -17, 24, 34);
 
-    /* COIN */
-
     ctx.fillStyle = "#facc15";
-
     ctx.fillRect(-8, -14, 16, 28);
 
     ctx.fillStyle = "#fde68a";
-
     ctx.fillRect(-4, -10, 5, 20);
 
     ctx.fillStyle = "#ca8a04";
-
     ctx.fillRect(4, -8, 4, 17);
 
     ctx.restore();
   });
 }
 
-/* =========================================================
-   DRAW ENEMIES
-========================================================= */
-
+// DRAW ENEMIES
 function drawEnemies() {
   enemies.forEach((enemy) => {
     if (!enemy.alive) {
@@ -2436,19 +1963,12 @@ function drawEnemies() {
     }
 
     const screenX = Math.floor(enemy.x - cameraX);
-
     const screenY = Math.floor(enemy.y);
 
-    /* SHADOW */
-
     ctx.fillStyle = "rgba(0,0,0,0.25)";
-
     ctx.fillRect(screenX + 4, screenY + enemy.height, enemy.width - 8, 4);
 
-    /* PILIH ANIMASI */
-
     const isPaused = enemy.pauseTimer > 0;
-
     let frames;
 
     if (isPaused) {
@@ -2459,8 +1979,6 @@ function drawEnemies() {
       frames = enemySprites.walkLeft;
     }
 
-    /* FRAME INDEX (pakai animationTimer yang sudah ada) */
-
     const frameIndex = Math.floor(enemy.animationTimer / 6) % frames.length;
 
     const sprite = frames[frameIndex];
@@ -2469,19 +1987,12 @@ function drawEnemies() {
       return;
     }
 
-    /* UKURAN SPRITE (proporsional terhadap hitbox) */
-
     const spriteWidth = 46;
     const spriteHeight = 95;
 
-    /* Posisi: center horizontal, kaki sejajar bawah hitbox */
-
     const drawX = screenX + enemy.width / 2 - spriteWidth / 2;
-
     const drawY = screenY + enemy.height - spriteHeight;
-
     ctx.imageSmoothingEnabled = false;
-
     ctx.drawImage(
       sprite,
       Math.floor(drawX),
@@ -2492,71 +2003,37 @@ function drawEnemies() {
   });
 }
 
-/* =========================================================
-   DRAW FINISH
-========================================================= */
-
+// DRAW FINISH
 function drawFinish() {
   const screenX = Math.floor(finish.x - cameraX);
-
-  /* POLE */
-
   ctx.fillStyle = "#e5e7eb";
-
   ctx.fillRect(screenX + 28, finish.y, 6, finish.height);
-
-  /* FLAG */
-
   ctx.fillStyle = "#ef4444";
-
   ctx.beginPath();
-
   ctx.moveTo(screenX + 34, finish.y + 10);
-
   ctx.lineTo(screenX + 80, finish.y + 30);
-
   ctx.lineTo(screenX + 34, finish.y + 50);
-
   ctx.closePath();
-
   ctx.fill();
 
-  /* BALL */
-
   ctx.fillStyle = "#facc15";
-
   ctx.beginPath();
-
   ctx.arc(screenX + 31, finish.y, 7, 0, Math.PI * 2);
-
   ctx.fill();
 }
 
-/* =========================================================
-   DRAW WORLD
-========================================================= */
-
+// DRAW WORLD
 function drawWorld() {
   ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
   drawBackground();
-
   drawPlatforms();
-
   drawQuestionBlocks();
-
   drawMushrooms();
-
   drawCoins();
-
   drawEnemies();
-
   drawFinish();
-
   drawParticles();
-
   player.draw();
-
   drawCheckpoint();
 }
 
@@ -2564,48 +2041,25 @@ function drawWorld() {
 function drawCheckpoint() {
   const screenX = Math.floor(checkpoint.x - cameraX);
 
-  /* TIANG */
-
   ctx.fillStyle = "#78350f";
-
   ctx.fillRect(screenX + 12, checkpoint.y, 6, checkpoint.height);
-
-  /* FLAG */
-
   ctx.fillStyle = checkpoint.active ? "#22c55e" : "#ef4444";
-
   ctx.fillRect(screenX + 18, checkpoint.y + 8, 28, 20);
-
-  /* FLAG DETAIL */
-
   ctx.fillStyle = checkpoint.active ? "#86efac" : "#fca5a5";
-
   ctx.fillRect(screenX + 18, checkpoint.y + 8, 8, 20);
-
-  /* BALL */
-
   ctx.fillStyle = "#facc15";
-
   ctx.fillRect(screenX + 10, checkpoint.y - 6, 10, 10);
-
-  /* GROUND */
-
   ctx.fillStyle = "rgba(0,0,0,0.2)";
-
   ctx.fillRect(screenX + 4, checkpoint.y + checkpoint.height, 24, 4);
 }
 
-/* =========================================================
-   GAME LOOP
-========================================================= */
-
+// GAME LOOP
 function gameLoop(timestamp) {
   if (!lastTime) {
     lastTime = timestamp;
   }
 
   let delta = timestamp - lastTime;
-
   lastTime = timestamp;
 
   if (delta > 40) {
@@ -2614,35 +2068,22 @@ function gameLoop(timestamp) {
 
   if (gameRunning) {
     gameTime += delta / 16.67;
-
     player.update();
-
     updateQuestionBlocks();
-
     updateMushrooms();
-
     updateCoins();
-
     updateEnemies();
-
     updateEnemyNearSound();
-
     updateParticles();
-
     checkCheckpoint();
-
     checkFinish();
   }
 
   drawWorld();
-
   requestAnimationFrame(gameLoop);
 }
 
-/* =========================================================
-   BUTTONS
-========================================================= */
-
+// BUTTONS
 const startButton = document.getElementById("startButton");
 
 if (startButton) {
@@ -2702,23 +2143,14 @@ if (nextLevelButton) {
   });
 }
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
+//  INITIALIZE
 updateUI();
 updatePauseButtonVisibility();
 
 drawWorld();
 
-/* START SCREEN SOUND */
 playStartScreenSound();
 
-/*
-   Browser biasanya memblokir autoplay sebelum user berinteraksi.
-   Kalau suara belum bisa diputar saat halaman pertama dibuka,
-   interaksi pertama pada start screen akan mencoba memutarnya lagi.
-*/
 document.addEventListener(
   "pointerdown",
   () => {
