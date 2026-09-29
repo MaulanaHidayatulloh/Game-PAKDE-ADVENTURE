@@ -306,8 +306,8 @@ button {
 }
 
 .mobile-controls button {
-  width: 65px;
-  height: 65px;
+  width: 80px;
+  height: 80px;
   background: rgba(31, 41, 55, 0.48);
   color: rgba(255, 255, 255, 0.92);
   border: 3px solid rgba(55, 65, 81, 0.62);
@@ -499,8 +499,8 @@ button {
   }
 
   .mobile-controls button {
-    width: 58px;
-    height: 58px;
+    width: 73px;
+    height: 73px;
     font-size: 20px;
   }
 
@@ -547,8 +547,8 @@ button {
   }
 
   .mobile-controls button {
-    width: 52px;
-    height: 52px;
+    width: 67px;
+    height: 67px;
     font-size: 18px;
   }
 
@@ -578,8 +578,8 @@ button {
   }
 
   .mobile-controls button {
-    width: 50px;
-    height: 50px;
+    width: 65px;
+    height: 65px;
   }
 
   #jumpBtn {
@@ -766,8 +766,8 @@ button {
   }
 
   .mobile-controls button {
-    width: 50px;
-    height: 50px;
+    width: 65px;
+    height: 65px;
   }
 
   #jumpBtn {
