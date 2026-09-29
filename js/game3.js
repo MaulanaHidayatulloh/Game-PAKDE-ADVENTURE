@@ -315,168 +315,63 @@ function drawParticles() {
 }
 
 //  LEVEL
-const LEVEL_WIDTH = 5600;
+const LEVEL_WIDTH = 6800;
 
 const platforms = [
-  /* START AREA */
-  {
-    x: 0,
-    y: 530,
-    width: 850,
-    height: 70,
-  },
+  /* START - RAINY CLIFF */
+  { x: 0, y: 530, width: 620, height: 70 },
+  { x: 170, y: 410, width: 100, height: 30 },
+  { x: 380, y: 335, width: 150, height: 30 },
 
-  {
-    x: 220,
-    y: 410,
-    width: 120,
-    height: 30,
-  },
+  /* TORNADO GAP */
+  { x: 820, y: 530, width: 430, height: 70 },
+  { x: 900, y: 400, width: 130, height: 30 },
+  { x: 1100, y: 315, width: 120, height: 30 },
 
-  {
-    x: 480,
-    y: 340,
-    width: 150,
-    height: 30,
-  },
+  /* LIGHTNING FIELD */
+  { x: 1400, y: 530, width: 620, height: 70 },
+  { x: 1510, y: 400, width: 130, height: 30 },
+  { x: 1750, y: 310, width: 120, height: 30 },
+  { x: 1910, y: 420, width: 80, height: 30 },
 
-  {
-    x: 700,
-    y: 430,
-    width: 100,
-    height: 30,
-  },
+  /* CHECKPOINT ISLAND */
+  { x: 2160, y: 530, width: 430, height: 70 },
+  { x: 2240, y: 405, width: 120, height: 30 },
+  { x: 2440, y: 330, width: 100, height: 30 },
 
-  /* FOREST GAP */
+  /* WIND CANYON */
+  { x: 2730, y: 530, width: 520, height: 70 },
+  { x: 2800, y: 400, width: 110, height: 30 },
+  { x: 2990, y: 285, width: 120, height: 30 },
+  { x: 3170, y: 395, width: 90, height: 30 },
 
-  {
-    x: 1000,
-    y: 530,
-    width: 650,
-    height: 70,
-  },
+  /* STORM BRIDGE */
+  { x: 3380, y: 530, width: 760, height: 70 },
+  { x: 3470, y: 400, width: 100, height: 30 },
+  { x: 3650, y: 330, width: 120, height: 30 },
+  { x: 3890, y: 400, width: 90, height: 30 },
 
-  {
-    x: 1120,
-    y: 400,
-    width: 150,
-    height: 30,
-  },
+  /* FINAL STORM */
+  { x: 4240, y: 530, width: 600, height: 70 },
+  { x: 4330, y: 400, width: 110, height: 30 },
+  { x: 4520, y: 290, width: 110, height: 30 },
+  { x: 4700, y: 400, width: 100, height: 30 },
 
-  {
-    x: 1380,
-    y: 320,
-    width: 150,
-    height: 30,
-  },
-
-  /* CHECKPOINT AREA */
-  {
-    x: 1750,
-    y: 530,
-    width: 650,
-    height: 70,
-  },
-
-  {
-    x: 1870,
-    y: 400,
-    width: 150,
-    height: 30,
-  },
-
-  {
-    x: 2130,
-    y: 300,
-    width: 150,
-    height: 30,
-  },
-
-  /* DEEP FOREST */
-  {
-    x: 2500,
-    y: 530,
-    width: 700,
-    height: 70,
-  },
-
-  {
-    x: 2630,
-    y: 400,
-    width: 150,
-    height: 30,
-  },
-
-  {
-    x: 2900,
-    y: 320,
-    width: 150,
-    height: 30,
-  },
-
-  {
-    x: 3150,
-    y: 420,
-    width: 100,
-    height: 30,
-  },
-
-  /* FINAL AREA */
-  {
-    x: 3350,
-    y: 530,
-    width: 900,
-    height: 70,
-  },
-
-  {
-    x: 3500,
-    y: 400,
-    width: 170,
-    height: 30,
-  },
-
-  {
-    x: 3800,
-    y: 320,
-    width: 170,
-    height: 30,
-  },
-
-  {
-    x: 4100,
-    y: 420,
-    width: 120,
-    height: 30,
-  },
-
-  {
-    x: 4400,
-    y: 530,
-    width: 1200,
-    height: 70,
-  },
-
-  {
-    x: 4650,
-    y: 430,
-    width: 160,
-    height: 30,
-  },
-
-  {
-    x: 4950,
-    y: 320,
-    width: 170,
-    height: 30,
-  },
+  /* LAST GAUNTLET */
+  { x: 4950, y: 530, width: 350, height: 70 },
+  { x: 5100, y: 420, width: 100, height: 30 },
+  { x: 5290, y: 300, width: 100, height: 30 },
+  { x: 5480, y: 400, width: 100, height: 30 },
+  { x: 5680, y: 530, width: 1120, height: 70 },
+  { x: 5900, y: 390, width: 110, height: 30 },
+  { x: 6130, y: 300, width: 110, height: 30 },
 ];
 
 // QUESTION BLOCKS
 const questionBlocks = [
   {
-    x: 340,
-    y: 395,
+    x: 300,
+    y: 355,
     width: 44,
     height: 44,
     hit: false,
@@ -487,10 +382,9 @@ const questionBlocks = [
     coinVelocityY: 0,
     coinLife: 0,
   },
-
   {
-    x: 1450,
-    y: 110,
+    x: 1160,
+    y: 150,
     width: 44,
     height: 44,
     hit: false,
@@ -501,10 +395,22 @@ const questionBlocks = [
     coinVelocityY: 0,
     coinLife: 0,
   },
-
   {
-    x: 4650,
-    y: 220,
+    x: 2360,
+    y: 140,
+    width: 44,
+    height: 44,
+    hit: false,
+    offsetY: 0,
+    velocityY: 0,
+    coin: false,
+    coinY: 0,
+    coinVelocityY: 0,
+    coinLife: 0,
+  },
+  {
+    x: 5360,
+    y: 100,
     width: 44,
     height: 44,
     hit: false,
@@ -967,20 +873,20 @@ const player = {
 
 // COINS
 const coins = [
-  { x: 260, y: 360, collected: false },
-  { x: 310, y: 360, collected: false },
-  { x: 520, y: 290, collected: false },
-  { x: 580, y: 290, collected: false },
-  { x: 740, y: 380, collected: false },
-  { x: 1160, y: 350, collected: false },
-  { x: 1210, y: 350, collected: false },
+  { x: 200, y: 360, collected: false },
+  { x: 250, y: 360, collected: false },
+  { x: 420, y: 290, collected: false },
+  { x: 500, y: 290, collected: false },
+  { x: 740, y: 280, collected: false },
+  { x: 1130, y: 270, collected: false },
+  { x: 1190, y: 270, collected: false },
   { x: 1420, y: 270, collected: false },
   { x: 1810, y: 470, collected: false },
   { x: 1870, y: 470, collected: false },
   { x: 1920, y: 340, collected: false },
   { x: 2180, y: 250, collected: false },
-  { x: 2580, y: 470, collected: false },
-  { x: 2640, y: 470, collected: false },
+  { x: 2480, y: 470, collected: false },
+  { x: 2540, y: 470, collected: false },
   { x: 2950, y: 270, collected: false },
   { x: 3150, y: 370, collected: false },
   { x: 3500, y: 470, collected: false },
@@ -997,73 +903,101 @@ const coins = [
 //  ENEMIES
 const enemies = [
   {
-    x: 600,
-    y: 480,
-    width: 40,
-    height: 50,
-    velocityX: 1.5,
-    minX: 520,
-    maxX: 800,
-    alive: true,
-    animationTimer: 0,
-  },
-
-  {
-    x: 1180,
-    y: 480,
-    width: 40,
-    height: 50,
-    velocityX: 1.7,
-    minX: 1050,
-    maxX: 1550,
-    alive: true,
-    animationTimer: 0,
-  },
-
-  {
-    x: 1900,
-    y: 480,
-    width: 40,
-    height: 50,
-    velocityX: 1.6,
-    minX: 1780,
-    maxX: 2300,
-    alive: true,
-    animationTimer: 0,
-  },
-
-  {
-    x: 2600,
-    y: 480,
-    width: 40,
-    height: 50,
-    velocityX: 2,
-    minX: 2520,
-    maxX: 3100,
-    alive: true,
-    animationTimer: 0,
-  },
-
-  {
-    x: 3500,
+    x: 430,
     y: 480,
     width: 40,
     height: 50,
     velocityX: 1.8,
-    minX: 3400,
-    maxX: 4200,
+    minX: 300,
+    maxX: 590,
     alive: true,
     animationTimer: 0,
   },
-
   {
-    x: 4550,
+    x: 900,
     y: 480,
     width: 40,
     height: 50,
-    velocityX: 2,
-    minX: 4450,
-    maxX: 5100,
+    velocityX: 2.1,
+    minX: 830,
+    maxX: 1220,
+    alive: true,
+    animationTimer: 0,
+  },
+  {
+    x: 1490,
+    y: 480,
+    width: 40,
+    height: 50,
+    velocityX: 2.0,
+    minX: 1430,
+    maxX: 1980,
+    alive: true,
+    animationTimer: 0,
+  },
+  {
+    x: 2250,
+    y: 480,
+    width: 40,
+    height: 50,
+    velocityX: 2.2,
+    minX: 2190,
+    maxX: 2530,
+    alive: true,
+    animationTimer: 0,
+  },
+  {
+    x: 2780,
+    y: 480,
+    width: 40,
+    height: 50,
+    velocityX: 2.4,
+    minX: 2740,
+    maxX: 3210,
+    alive: true,
+    animationTimer: 0,
+  },
+  {
+    x: 3440,
+    y: 480,
+    width: 40,
+    height: 50,
+    velocityX: 2.3,
+    minX: 3400,
+    maxX: 4100,
+    alive: true,
+    animationTimer: 0,
+  },
+  {
+    x: 4320,
+    y: 480,
+    width: 40,
+    height: 50,
+    velocityX: 2.5,
+    minX: 4260,
+    maxX: 4800,
+    alive: true,
+    animationTimer: 0,
+  },
+  {
+    x: 5010,
+    y: 480,
+    width: 40,
+    height: 50,
+    velocityX: 2.6,
+    minX: 4980,
+    maxX: 5290,
+    alive: true,
+    animationTimer: 0,
+  },
+  {
+    x: 5750,
+    y: 480,
+    width: 40,
+    height: 50,
+    velocityX: 2.7,
+    minX: 5700,
+    maxX: 6750,
     alive: true,
     animationTimer: 0,
   },
@@ -1086,21 +1020,86 @@ const mushrooms = [
 ];
 
 //  CHECKPOINT
-const checkpoint = {
-  x: 2350,
-  y: 430,
-  width: 30,
-  height: 100,
-  active: false,
-};
+const checkpoint = { x: 2520, y: 430, width: 30, height: 100, active: false };
 
-//  FINISH
-const finish = {
-  x: 5400,
-  y: 330,
-  width: 60,
-  height: 200,
-};
+// FINISH
+const finish = { x: 6540, y: 330, width: 60, height: 200 };
+
+// STORM HAZARDS
+const windZones = [
+  { x: 650, y: 0, width: 170, height: 530, force: 0.18, direction: 1 },
+  { x: 2570, y: 0, width: 160, height: 530, force: -0.2, direction: -1 },
+  { x: 4140, y: 0, width: 100, height: 530, force: 0.22, direction: 1 },
+  { x: 4840, y: 0, width: 110, height: 530, force: -0.24, direction: -1 },
+];
+
+const tornadoes = [
+  {
+    x: 710,
+    y: 360,
+    width: 70,
+    height: 170,
+    velocityX: 1.6,
+    minX: 650,
+    maxX: 800,
+    phase: 0,
+    hitCooldown: 0,
+  },
+  {
+    x: 2010,
+    y: 350,
+    width: 75,
+    height: 180,
+    velocityX: -1.9,
+    minX: 1900,
+    maxX: 2140,
+    phase: 1.8,
+    hitCooldown: 0,
+  },
+  {
+    x: 3250,
+    y: 350,
+    width: 75,
+    height: 180,
+    velocityX: 2.0,
+    minX: 3180,
+    maxX: 3370,
+    phase: 3.1,
+    hitCooldown: 0,
+  },
+  {
+    x: 4750,
+    y: 350,
+    width: 80,
+    height: 180,
+    velocityX: -2.2,
+    minX: 4680,
+    maxX: 4920,
+    phase: 4.2,
+    hitCooldown: 0,
+  },
+  {
+    x: 5550,
+    y: 350,
+    width: 80,
+    height: 180,
+    velocityX: 2.4,
+    minX: 5480,
+    maxX: 5680,
+    phase: 0.7,
+    hitCooldown: 0,
+  },
+];
+
+const lightningStrikes = [
+  { x: 1180, timer: 20, cycle: 210, warning: 0, active: 0, hitCooldown: 0 },
+  { x: 1670, timer: 100, cycle: 230, warning: 0, active: 0, hitCooldown: 0 },
+  { x: 2550, timer: 50, cycle: 190, warning: 0, active: 0, hitCooldown: 0 },
+  { x: 3690, timer: 140, cycle: 220, warning: 0, active: 0, hitCooldown: 0 },
+  { x: 4480, timer: 70, cycle: 200, warning: 0, active: 0, hitCooldown: 0 },
+  { x: 5200, timer: 10, cycle: 180, warning: 0, active: 0, hitCooldown: 0 },
+  { x: 6060, timer: 90, cycle: 200, warning: 0, active: 0, hitCooldown: 0 },
+];
 
 // COLLISION
 function checkCollision(a, b) {
@@ -1339,7 +1338,7 @@ function drawMushrooms() {
     ctx.fillRect(x + 4, y + mushroom.height + 2, mushroom.width - 8, 4);
 
     /* STEM */
-    ctx.fillStyle = "#fef3c7";
+    ctx.fillStyle = "#bae6fd";
     ctx.fillRect(x + 10, y + 18, 18, 17);
     ctx.fillRect(x + 13, y + 15, 12, 5);
 
@@ -1416,13 +1415,432 @@ function drawCoins() {
     ctx.fillRect(-7, -12, 14, 24);
 
     /* HIGHLIGHT */
-    ctx.fillStyle = "#fef08a";
+    ctx.fillStyle = "#7dd3fc";
     ctx.fillRect(-4, -9, 4, 18);
 
     /* CENTER */
     ctx.fillStyle = "#eab308";
     ctx.fillRect(1, -6, 3, 12);
     ctx.restore();
+  });
+}
+
+// STORM HAZARDS
+function hazardDamage() {
+  if (!gameRunning || gamePaused || player.hurt || player.invincible) return;
+  loseLife(true);
+}
+
+function updateStormHazards() {
+  // Wind zones push the player while crossing exposed gaps.
+  for (const zone of windZones) {
+    if (
+      player.x + player.width > zone.x &&
+      player.x < zone.x + zone.width &&
+      player.y < zone.y + zone.height
+    ) {
+      player.velocityX += zone.force;
+      player.velocityX = Math.max(
+        -maxSpeed - 1.5,
+        Math.min(maxSpeed + 1.5, player.velocityX),
+      );
+    }
+  }
+
+  // Moving tornadoes.
+  for (const tornado of tornadoes) {
+    tornado.x += tornado.velocityX;
+    tornado.phase += 0.08;
+    if (
+      tornado.x <= tornado.minX ||
+      tornado.x + tornado.width >= tornado.maxX
+    ) {
+      tornado.velocityX *= -1;
+    }
+    if (tornado.hitCooldown > 0) tornado.hitCooldown--;
+
+    const box = {
+      x: tornado.x + 15,
+      y: tornado.y,
+      width: tornado.width - 30,
+      height: tornado.height,
+    };
+    if (checkCollision(player, box) && tornado.hitCooldown <= 0) {
+      tornado.hitCooldown = 75;
+      player.velocityX += tornado.velocityX > 0 ? -5 : 5;
+      player.velocityY = -8;
+      hazardDamage();
+    }
+  }
+
+  // Lightning: warning -> strike -> cooldown.
+  for (const strike of lightningStrikes) {
+    if (strike.hitCooldown > 0) strike.hitCooldown--;
+    strike.timer++;
+    const cyclePos = strike.timer % strike.cycle;
+    strike.warning = cyclePos >= strike.cycle - 65 ? 1 : 0;
+    strike.active = cyclePos >= strike.cycle - 14 ? 1 : 0;
+
+    if (strike.active && strike.hitCooldown <= 0) {
+      const box = { x: strike.x - 22, y: 0, width: 44, height: 530 };
+      if (checkCollision(player, box)) {
+        strike.hitCooldown = 80;
+        player.velocityY = -10;
+        hazardDamage();
+      }
+    }
+  }
+}
+
+function drawStormHazards() {
+  /* =====================================================
+     WIND ZONES - thin streaks, not solid rectangles
+  ===================================================== */
+  windZones.forEach((zone) => {
+    const sx = Math.floor(zone.x - cameraX);
+    const travel = (gameTime * 3.2) % 110;
+
+    ctx.save();
+    ctx.globalAlpha = 0.22;
+
+    for (let row = 0; row < 6; row++) {
+      const y = 105 + row * 65;
+      const raw = (travel + row * 27) % 110;
+      const x = zone.direction > 0 ? sx + raw : sx + zone.width - raw;
+
+      ctx.fillStyle = "#dbeafe";
+      ctx.fillRect(Math.floor(x), y, 34, 3);
+      ctx.fillRect(Math.floor(x + (zone.direction > 0 ? 27 : -3)), y - 4, 7, 3);
+      ctx.fillRect(Math.floor(x + (zone.direction > 0 ? 27 : -3)), y + 4, 7, 3);
+    }
+
+    ctx.restore();
+  });
+
+  /* =====================================================
+     TORNADO - inverted realistic pixel-art funnel
+     Wide cloud/base at the TOP -> narrow tip at the GROUND.
+  ===================================================== */
+  tornadoes.forEach((tornado) => {
+    const sx = Math.floor(tornado.x - cameraX);
+    const sy = Math.floor(tornado.y);
+    const cx = sx + tornado.width / 2;
+    const h = tornado.height;
+    const pulse = Math.sin(tornado.phase * 1.7) * 2;
+
+    ctx.save();
+    ctx.imageSmoothingEnabled = false;
+
+    /* ---------------------------------------------
+       STORM CLOUD / WIDE TOP
+    --------------------------------------------- */
+    ctx.globalAlpha = 0.3;
+    ctx.fillStyle = "#cbd5e1";
+    ctx.fillRect(
+      Math.floor(cx - tornado.width * 0.48),
+      sy - 8,
+      Math.floor(tornado.width * 0.96),
+      16,
+    );
+
+    ctx.globalAlpha = 0.42;
+    ctx.fillStyle = "#94a3b8";
+    ctx.fillRect(
+      Math.floor(cx - tornado.width * 0.34),
+      sy - 14,
+      Math.floor(tornado.width * 0.68),
+      12,
+    );
+    ctx.fillRect(
+      Math.floor(cx - tornado.width * 0.42),
+      sy - 4,
+      Math.floor(tornado.width * 0.84),
+      9,
+    );
+
+    /* ---------------------------------------------
+       OUTER FUNNEL
+       WIDE AT TOP, NARROW AT BOTTOM.
+    --------------------------------------------- */
+    ctx.globalAlpha = 0.48;
+    ctx.fillStyle = "#64748b";
+    ctx.beginPath();
+    ctx.moveTo(cx - tornado.width * 0.43 + pulse, sy + 2);
+    ctx.bezierCurveTo(
+      cx - tornado.width * 0.4,
+      sy + 38,
+      cx - tornado.width * 0.3,
+      sy + 76,
+      cx - tornado.width * 0.22,
+      sy + 108,
+    );
+    ctx.bezierCurveTo(
+      cx - tornado.width * 0.15,
+      sy + 138,
+      cx - 10,
+      sy + h - 28,
+      cx - 7,
+      sy + h - 3,
+    );
+    ctx.lineTo(cx + 7, sy + h - 3);
+    ctx.bezierCurveTo(
+      cx + 10,
+      sy + h - 28,
+      cx + tornado.width * 0.15,
+      sy + 138,
+      cx + tornado.width * 0.22,
+      sy + 108,
+    );
+    ctx.bezierCurveTo(
+      cx + tornado.width * 0.3,
+      sy + 76,
+      cx + tornado.width * 0.4,
+      sy + 38,
+      cx + tornado.width * 0.43 - pulse,
+      sy + 2,
+    );
+    ctx.closePath();
+    ctx.fill();
+
+    /* ---------------------------------------------
+       DARK INNER FUNNEL
+    --------------------------------------------- */
+    ctx.globalAlpha = 0.52;
+    ctx.fillStyle = "#334155";
+    ctx.beginPath();
+    ctx.moveTo(cx - tornado.width * 0.27, sy + 8);
+    ctx.bezierCurveTo(
+      cx - tornado.width * 0.25,
+      sy + 52,
+      cx - tornado.width * 0.17,
+      sy + 88,
+      cx - tornado.width * 0.11,
+      sy + 116,
+    );
+    ctx.bezierCurveTo(
+      cx - 7,
+      sy + 142,
+      cx - 4,
+      sy + h - 19,
+      cx - 3,
+      sy + h - 3,
+    );
+    ctx.lineTo(cx + 3, sy + h - 3);
+    ctx.bezierCurveTo(
+      cx + 4,
+      sy + h - 19,
+      cx + 7,
+      sy + 142,
+      cx + tornado.width * 0.11,
+      sy + 116,
+    );
+    ctx.bezierCurveTo(
+      cx + tornado.width * 0.17,
+      sy + 88,
+      cx + tornado.width * 0.25,
+      sy + 52,
+      cx + tornado.width * 0.27,
+      sy + 8,
+    );
+    ctx.closePath();
+    ctx.fill();
+
+    /* ---------------------------------------------
+       ROTATING WIND BANDS
+    --------------------------------------------- */
+    const bands = [
+      { y: 14, width: 50 },
+      { y: 42, width: 44 },
+      { y: 72, width: 36 },
+      { y: 102, width: 27 },
+      { y: 132, width: 18 },
+      { y: 158, width: 10 },
+    ];
+
+    bands.forEach((band, i) => {
+      const progress = band.y / h;
+      const funnelWidth = tornado.width * (0.78 - progress * 0.7);
+      const width = Math.max(7, Math.min(band.width, funnelWidth));
+      const drift = Math.sin(tornado.phase * 2.1 + i * 1.15) * (4 + i);
+
+      ctx.globalAlpha = 0.42 + (i % 2) * 0.1;
+      ctx.fillStyle = i % 2 === 0 ? "#e2e8f0" : "#94a3b8";
+      ctx.fillRect(
+        Math.floor(cx - width / 2 + drift),
+        sy + band.y,
+        Math.floor(width),
+        5,
+      );
+    });
+
+    /* ---------------------------------------------
+       SPIRAL WIND STREAKS
+    --------------------------------------------- */
+    ctx.globalAlpha = 0.52;
+    ctx.strokeStyle = "#e2e8f0";
+    ctx.lineWidth = 4;
+
+    ctx.beginPath();
+    ctx.moveTo(cx - tornado.width * 0.3, sy + 20);
+    ctx.quadraticCurveTo(
+      cx + tornado.width * 0.34,
+      sy + 58,
+      cx - tornado.width * 0.14,
+      sy + 96,
+    );
+    ctx.quadraticCurveTo(cx - 4, sy + 126, cx - 5, sy + h - 12);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(cx + tornado.width * 0.3, sy + 28);
+    ctx.quadraticCurveTo(
+      cx - tornado.width * 0.3,
+      sy + 68,
+      cx + tornado.width * 0.12,
+      sy + 106,
+    );
+    ctx.quadraticCurveTo(cx + 6, sy + 132, cx + 4, sy + h - 10);
+    ctx.stroke();
+
+    /* ---------------------------------------------
+       FLYING DEBRIS - WIDER ORBIT AT TOP,
+       TIGHTER ORBIT TOWARD THE TIP.
+    --------------------------------------------- */
+    ctx.globalAlpha = 0.9;
+    ctx.fillStyle = "#78716c";
+
+    for (let i = 0; i < 10; i++) {
+      const t = i / 10;
+      const y = sy + 18 + t * (h - 34);
+      const orbit = tornado.width * (0.43 - t * 0.35);
+      const angle = tornado.phase * (1.7 + t) + i * 0.9;
+      const x = cx + Math.cos(angle) * Math.max(4, orbit);
+      const size = i % 3 === 0 ? 7 : 4;
+
+      ctx.fillRect(
+        Math.floor(x),
+        Math.floor(y + Math.sin(angle * 1.4) * 5),
+        size,
+        size,
+      );
+    }
+
+    /* ---------------------------------------------
+       NARROW DUST / DEBRIS AT THE GROUND TIP
+    --------------------------------------------- */
+    ctx.globalAlpha = 0.62;
+    ctx.fillStyle = "#a8a29e";
+
+    for (let i = 0; i < 10; i++) {
+      const angle = tornado.phase * 2.4 + i * 0.65;
+      const radius = 5 + (i % 4) * 5;
+
+      ctx.fillRect(
+        Math.floor(cx + Math.cos(angle) * radius),
+        Math.floor(sy + h - 7 + Math.sin(angle) * 4),
+        i % 2 ? 4 : 6,
+        i % 2 ? 4 : 5,
+      );
+    }
+
+    /* Small contact shadow under the tornado tip */
+    ctx.globalAlpha = 0.25;
+    ctx.fillStyle = "#475569";
+    ctx.fillRect(Math.floor(cx - 12), sy + h - 1, 24, 4);
+
+    ctx.restore();
+  });
+
+  /* =====================================================
+     LIGHTNING - warning glow + branched bolt
+  ===================================================== */
+  lightningStrikes.forEach((strike) => {
+    const sx = Math.floor(strike.x - cameraX);
+    const pulse = Math.sin(gameTime * 0.35 + strike.x) * 0.5 + 0.5;
+
+    if (strike.warning) {
+      ctx.save();
+      ctx.globalAlpha = 0.16 + pulse * 0.12;
+      ctx.fillStyle = "#7dd3fc";
+      ctx.fillRect(sx - 24, 0, 48, 530);
+
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = "#38bdf8";
+      ctx.fillRect(sx - 12, 510, 24, 4);
+      ctx.fillRect(sx - 20, 516, 40, 3);
+
+      /* warning electric arcs */
+      ctx.strokeStyle = "#7dd3fc";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(sx - 5, 0);
+      ctx.lineTo(sx - 14, 90);
+      ctx.lineTo(sx + 4, 150);
+      ctx.lineTo(sx - 10, 225);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    if (strike.active) {
+      ctx.save();
+
+      /* Flash */
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(sx - 42, 0, 84, 530);
+
+      /* Glow */
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = "#7dd3fc";
+      ctx.shadowColor = "#ffffff";
+      ctx.shadowBlur = 18;
+
+      ctx.beginPath();
+      ctx.moveTo(sx + 8, 0);
+      ctx.lineTo(sx - 10, 78);
+      ctx.lineTo(sx + 1, 78);
+      ctx.lineTo(sx - 19, 158);
+      ctx.lineTo(sx - 2, 158);
+      ctx.lineTo(sx - 29, 264);
+      ctx.lineTo(sx + 4, 204);
+      ctx.lineTo(sx - 3, 204);
+      ctx.lineTo(sx + 20, 118);
+      ctx.lineTo(sx + 7, 118);
+      ctx.closePath();
+      ctx.fill();
+
+      /* Main white bolt */
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.moveTo(sx + 7, 0);
+      ctx.lineTo(sx - 7, 78);
+      ctx.lineTo(sx + 3, 78);
+      ctx.lineTo(sx - 14, 151);
+      ctx.lineTo(sx + 0, 151);
+      ctx.lineTo(sx - 22, 238);
+      ctx.lineTo(sx + 7, 185);
+      ctx.lineTo(sx + 1, 185);
+      ctx.lineTo(sx + 17, 106);
+      ctx.lineTo(sx + 6, 106);
+      ctx.closePath();
+      ctx.fill();
+
+      /* Side branches */
+      ctx.fillRect(sx - 8, 78, 24, 3);
+      ctx.fillRect(sx - 25, 110, 19, 3);
+      ctx.fillRect(sx + 4, 137, 20, 3);
+      ctx.fillRect(sx - 30, 172, 29, 3);
+
+      /* Ground flash */
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = "#bae6fd";
+      ctx.fillRect(sx - 30, 500, 60, 5);
+      ctx.fillRect(sx - 18, 507, 36, 4);
+
+      ctx.restore();
+    }
   });
 }
 
@@ -1702,6 +2120,7 @@ window.addEventListener("popstate", () => {
 });
 
 //  DEATH
+
 function loseLife(showHurtAnimation = false) {
   if (!gameRunning || player.hurt) {
     return;
@@ -1724,79 +2143,35 @@ function loseLife(showHurtAnimation = false) {
   }
 
   finishPlayerDeath();
+}
 
+// SELESAI ANIMASI KEMATIAN
+function finishPlayerDeath() {
   if (lives <= 0) {
     gameRunning = false;
     gamePaused = false;
+
     hidePauseScreen();
     stopSound(sounds.pause);
     updatePauseButtonVisibility();
 
     sounds.background.pause();
-
-    const finalScore = document.getElementById("finalScore");
-
-    if (finalScore) {
-      finalScore.textContent = score;
-    }
-
-    const gameOverScreen = document.getElementById("gameOverScreen");
-
-    if (gameOverScreen) {
-      gameOverScreen.classList.remove("hidden");
-    }
-
-    /* STOP START SCREEN SOUND + PLAY GAME OVER SOUND */
     stopStartScreenSound();
-    playSound(sounds.gameOver);
-  } else {
-    player.reset();
-
-    if (checkpoint.active) {
-      player.x = checkpoint.x - player.width / 2;
-
-      player.y = checkpoint.y - player.height;
-    }
-
-    mushrooms.forEach((mushroom) => {
-      mushroom.active = false;
-      mushroom.collected = false;
-      mushroom.x = 0;
-      mushroom.y = 0;
-    });
-
-    setTimeout(() => {
-      if (checkpoint.active) {
-        player.y = checkpoint.y - player.height;
-      } else {
-        player.y = 350;
-      }
-    }, 100);
-  }
-}
-
-//  SELESAI ANIMASI KEMATIAN
-function finishPlayerDeath() {
-  if (lives <= 0) {
-    gameRunning = false;
-    gamePaused = false;
-    hidePauseScreen();
-    stopSound(sounds.pause);
-
-    sounds.background.pause();
+    stopSound(sounds.win);
+    stopSound(sounds.deathPowered);
 
     const finalScore = document.getElementById("finalScore");
-
     if (finalScore) {
       finalScore.textContent = score;
     }
 
     const gameOverScreen = document.getElementById("gameOverScreen");
-
     if (gameOverScreen) {
       gameOverScreen.classList.remove("hidden");
     }
 
+    /* Game-over sound is started in exactly one place. */
+    playSound(sounds.gameOver);
     return;
   }
 
@@ -1838,15 +2213,19 @@ function winGame() {
 
   gameRunning = false;
   hidePauseScreen();
-  stopSound(sounds.pause);
   updatePauseButtonVisibility();
 
-  localStorage.setItem("level3Unlocked", "true");
+  localStorage.setItem("level3Completed", "true");
 
   sounds.background.pause();
 
+  hidePauseScreen();
+  stopSound(sounds.pause);
   stopStartScreenSound();
   stopSound(sounds.gameOver);
+  stopSound(sounds.deathPowered);
+  updatePauseButtonVisibility();
+
   playSound(sounds.win);
 
   const winScore = document.getElementById("winScore");
@@ -1876,6 +2255,9 @@ function resetGame() {
   gamePaused = false;
 
   hidePauseScreen();
+  stopSound(sounds.pause);
+  stopSound(sounds.gameOver);
+  stopSound(sounds.win);
   activatePauseHistoryGuard();
 
   checkpoint.active = false;
@@ -1904,11 +2286,27 @@ function resetGame() {
 
     enemy.animationTimer = 0;
 
-    const startingPositions = [600, 1180, 1900, 2600, 3500, 4550];
+    const startingPositions = [
+      430, 900, 1490, 2250, 2780, 3440, 4320, 5010, 5750,
+    ];
 
     enemy.x = startingPositions[index];
 
     enemy.velocityX = Math.abs(enemy.velocityX);
+  });
+
+  tornadoes.forEach((tornado, index) => {
+    tornado.hitCooldown = 0;
+    tornado.x = [710, 2010, 3250, 4750, 5550][index];
+    tornado.velocityX =
+      Math.abs(tornado.velocityX) * (index % 2 === 0 ? 1 : -1);
+  });
+
+  lightningStrikes.forEach((strike, index) => {
+    strike.timer = [20, 100, 50, 140, 70, 10, 90][index];
+    strike.warning = 0;
+    strike.active = 0;
+    strike.hitCooldown = 0;
   });
 
   /* QUESTION BLOCKS */
@@ -1982,7 +2380,46 @@ function hideScreens() {
 }
 
 //  BACKGROUND
-const backgroundImage = loadSprite("assets/background_level2.png");
+const backgroundImage = loadSprite("assets/background_level3.png");
+
+function drawRain() {
+  ctx.save();
+  ctx.lineWidth = 1;
+  ctx.lineCap = "round";
+
+  // Hujan utama: lebih rapat, bergerak diagonal, dan punya panjang bervariasi.
+  for (let i = 0; i < 190; i++) {
+    const speed = 7 + (i % 5) * 1.4;
+    const length = 14 + (i % 4) * 5;
+    const drift = gameTime * speed;
+    const x = ((i * 137 + drift * 0.95) % (GAME_WIDTH + 120)) - 60;
+    const y = ((i * 83 + drift * 1.7) % (GAME_HEIGHT + 120)) - 60;
+
+    ctx.globalAlpha = 0.22 + (i % 4) * 0.045;
+    ctx.strokeStyle = i % 3 === 0 ? "#e2e8f0" : "#cbd5e1";
+
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x - 7, y + length);
+    ctx.stroke();
+  }
+
+  // Beberapa tetes foreground yang lebih terang supaya efek hujan terasa di depan objek.
+  ctx.lineWidth = 1.5;
+  for (let i = 0; i < 35; i++) {
+    const x = ((i * 211 + gameTime * 12) % (GAME_WIDTH + 100)) - 50;
+    const y = ((i * 97 + gameTime * 18) % (GAME_HEIGHT + 100)) - 50;
+
+    ctx.globalAlpha = 0.32;
+    ctx.strokeStyle = "#f1f5f9";
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x - 9, y + 25);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
 
 function drawBackground() {
   if (backgroundImage.complete && backgroundImage.naturalWidth > 0) {
@@ -2169,7 +2606,7 @@ function drawQuestionBlocks() {
     ctx.lineWidth = 3;
     ctx.strokeRect(x + 1, y + 1, block.width - 2, block.height - 2);
     if (!block.hit) {
-      ctx.fillStyle = "#fef3c7";
+      ctx.fillStyle = "#bae6fd";
 
       ctx.font = "bold 28px monospace";
 
@@ -2185,7 +2622,7 @@ function drawQuestionBlocks() {
       const coinY = block.coinY;
       ctx.fillStyle = "#facc15";
       ctx.fillRect(coinX - 8 - cameraX, coinY - 12, 16, 24);
-      ctx.fillStyle = "#fef08a";
+      ctx.fillStyle = "#7dd3fc";
       ctx.fillRect(coinX - 4 - cameraX, coinY - 8, 4, 16);
     }
   });
@@ -2274,8 +2711,12 @@ function drawWorld() {
   drawCoins();
   drawMushrooms();
   drawEnemies();
+  drawStormHazards();
   player.draw();
   drawParticles();
+
+  // Hujan digambar paling akhir agar tetap terlihat di depan seluruh objek level 3.
+  drawRain();
 }
 
 // GAME LOOP
@@ -2298,6 +2739,7 @@ function gameLoop(timestamp) {
     updateQuestionBlocks();
     updateMushrooms();
     updateCoins();
+    updateStormHazards();
     updateEnemies();
     updateEnemyNearSound();
     updateParticles();
@@ -2376,15 +2818,6 @@ const mainMenuButton = document.getElementById("mainMenuButton");
 if (mainMenuButton) {
   mainMenuButton.addEventListener("click", () => {
     window.location.href = "index.html";
-  });
-}
-
-/* NEXT LEVEL */
-const nextLevelButton = document.getElementById("nextLevelButton");
-
-if (nextLevelButton) {
-  nextLevelButton.addEventListener("click", () => {
-    window.location.href = "level3.html";
   });
 }
 

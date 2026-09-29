@@ -852,14 +852,14 @@
                 </button>
 
                 <!-- LEVEL 3 -->
-                <button class="level-button locked" disabled>
+                <button class="level-button locked" id="level3Button">
                   <span class="level-number">
                     LEVEL 3
-
                     <span class="lock-icon"> 🔒 </span>
                   </span>
-
-                  <span class="level-status"> SEGERA HADIR </span>
+                  <span class="level-status" id="level3Status">
+                    SELESAIKAN LEVEL 2
+                  </span>
                 </button>
 
                 <!-- LEVEL 4 -->
@@ -923,6 +923,8 @@
       const level1Button = document.getElementById("level1Button");
       const level2Button = document.getElementById("level2Button");
       const level2Status = document.getElementById("level2Status");
+      const level3Button = document.getElementById("level3Button");
+      const level3Status = document.getElementById("level3Status");
       const resetProgressButton = document.getElementById(
         "resetProgressButton",
       );
@@ -1084,40 +1086,36 @@
       function updateLevelStatus() {
         const level2Unlocked =
           localStorage.getItem("level2Unlocked") === "true";
+        const level3Unlocked =
+          localStorage.getItem("level3Unlocked") === "true";
 
         if (level2Unlocked) {
           level2Button.classList.remove("locked");
-
           level2Button.innerHTML = `
-
-            <span class="level-number">
-              LEVEL 2
-            </span>
-
-            <span class="level-status">
-              GEDUNG DPR
-            </span>
-
+            <span class="level-number">LEVEL 2</span>
+            <span class="level-status">GEDUNG DPR</span>
           `;
         } else {
           level2Button.classList.add("locked");
-
           level2Button.innerHTML = `
+            <span class="level-number">LEVEL 2 <span class="lock-icon">🔒</span></span>
+            <span class="level-status">SELESAIKAN LEVEL 1</span>
+          `;
+        }
 
+        if (level3Unlocked) {
+          level3Button.classList.remove("locked");
+          level3Button.innerHTML = `
+            <span class="level-number">LEVEL 3</span>
+            <span class="level-status">ISTANA PRESIDEN</span>
+          `;
+        } else {
+          level3Button.classList.add("locked");
+          level3Button.innerHTML = `
             <span class="level-number">
-
-              LEVEL 2
-
-              <span class="lock-icon">
-                🔒
-              </span>
-
+              LEVEL 3 <span class="lock-icon">🔒</span>
             </span>
-
-            <span class="level-status">
-              SELESAIKAN LEVEL 1
-            </span>
-
+            <span class="level-status">SELESAIKAN LEVEL 2</span>
           `;
         }
       }
@@ -1147,6 +1145,19 @@
         window.location.href = "level2.html";
       });
 
+      // LEVEL 3
+      level3Button.addEventListener("click", () => {
+        const level3Unlocked =
+          localStorage.getItem("level3Unlocked") === "true";
+        if (!level3Unlocked) {
+          playClickSound();
+          return;
+        }
+        playClickSound();
+        startBGM();
+        window.location.href = "level3.html";
+      });
+
       // RESET PROGRESS
       resetProgressButton.addEventListener("click", () => {
         playClickSound();
@@ -1160,13 +1171,36 @@
         }
 
         localStorage.removeItem("level2Unlocked");
+        localStorage.removeItem("level3Unlocked");
 
         updateLevelStatus();
       });
 
       //  INITIALIZATION
+      const unlockLevel3 = new URLSearchParams(window.location.search).get(
+        "unlockLevel3",
+      );
+      if (unlockLevel3 === "true") {
+        localStorage.setItem("level3Unlocked", "true");
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname,
+        );
+      }
+
       updateLevelStatus();
       updateSoundButton();
+
+      window.addEventListener("pageshow", () => {
+        updateLevelStatus();
+      });
+
+      window.addEventListener("storage", (event) => {
+        if (event.key === "level2Unlocked" || event.key === "level3Unlocked") {
+          updateLevelStatus();
+        }
+      });
     </script>
   </body>
 </html>

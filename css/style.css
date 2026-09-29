@@ -242,7 +242,9 @@ button {
 
 #startButton:hover,
 #restartButton:hover,
-#playAgainButton:hover {
+#playAgainButton:hover,
+#mainMenuButton:hover,
+#nextLevelButton:hover {
   transform: translate(2px, 2px);
   box-shadow: 3px 3px 0 #052e16;
 }
@@ -265,8 +267,20 @@ button {
   color: #000;
 }
 
-/*  FINAL SCORE */
+/* WIN SCREEN BUTTONS */
+.level-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  margin-top: 4px;
+}
 
+.level-buttons button {
+  width: 100%;
+}
+
+/*  FINAL SCORE */
 .final-score {
   color: #94a3b8;
   margin: 25px 0;
@@ -730,6 +744,10 @@ button {
   .canvas-container > .overlay button {
     padding: 10px 18px;
     font-size: 12px;
+  }
+
+  .level-buttons {
+    gap: 10px;
   }
 
   .canvas-container > .overlay .controls {
