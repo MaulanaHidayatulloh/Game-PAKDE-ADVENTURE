@@ -1282,7 +1282,10 @@
       }
 
       function updateLevelStatus() {
-        updateBestScores();
+        const best1 = Number(localStorage.getItem("bestScoreLevel1")) || 0;
+        const best2 = Number(localStorage.getItem("bestScoreLevel2")) || 0;
+        const best3 = Number(localStorage.getItem("bestScoreLevel3")) || 0;
+
         const level2Unlocked =
           localStorage.getItem("level2Unlocked") === "true";
         const level3Unlocked =
@@ -1293,14 +1296,14 @@
           level2Button.innerHTML = `
             <span class="level-number">LEVEL 2</span>
             <span class="level-status">GEDUNG DPR</span>
-            <span class="best-score" id="level2BestScore">BEST SCORE: 0</span>
+            <span class="best-score" id="level2BestScore">BEST SCORE: ${best2}</span>
           `;
         } else {
           level2Button.classList.add("locked");
           level2Button.innerHTML = `
             <span class="level-number">LEVEL 2 <span class="lock-icon">🔒</span></span>
             <span class="level-status">SELESAIKAN LEVEL 1</span>
-            <span class="best-score" id="level2BestScore">BEST SCORE: 0</span>
+            <span class="best-score" id="level2BestScore">BEST SCORE: ${best2}</span>
           `;
         }
 
@@ -1309,7 +1312,7 @@
           level3Button.innerHTML = `
             <span class="level-number">LEVEL 3</span>
             <span class="level-status">ISTANA PRESIDEN</span>
-            <span class="best-score" id="level3BestScore">BEST SCORE: 0</span>
+            <span class="best-score" id="level3BestScore">BEST SCORE: ${best3}</span>
           `;
         } else {
           level3Button.classList.add("locked");
@@ -1318,9 +1321,12 @@
               LEVEL 3 <span class="lock-icon">🔒</span>
             </span>
             <span class="level-status">SELESAIKAN LEVEL 2</span>
-            <span class="best-score" id="level3BestScore">BEST SCORE: 0</span>
+            <span class="best-score" id="level3BestScore">BEST SCORE: ${best3}</span>
           `;
         }
+
+        const bestScore1 = document.getElementById("level1BestScore");
+        if (bestScore1) bestScore1.textContent = `BEST SCORE: ${best1}`;
       }
 
       //     LEVEL 1

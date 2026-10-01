@@ -2133,6 +2133,8 @@ function loseLife(showHurtAnimation = false) {
 
   lives--;
 
+  saveBestScore();
+
   playSound(sounds.death);
 
   createEnemyParticles(

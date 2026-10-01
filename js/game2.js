@@ -1714,6 +1714,8 @@ function loseLife(showHurtAnimation = false) {
 
   lives--;
 
+  saveBestScore();
+
   playSound(sounds.death);
 
   createEnemyParticles(
@@ -1743,15 +1745,6 @@ function loseLife(showHurtAnimation = false) {
 
     if (finalScore) {
       finalScore.textContent = score;
-    }
-
-    // Simpan juga skor dari percobaan yang gagal jika menjadi skor tertinggi.
-    saveBestScore();
-
-    const gameOverBestScore = document.getElementById("gameOverBestScore");
-    if (gameOverBestScore) {
-      gameOverBestScore.textContent =
-        Number(localStorage.getItem("bestScoreLevel2")) || 0;
     }
 
     const gameOverScreen = document.getElementById("gameOverScreen");
@@ -1803,6 +1796,16 @@ function finishPlayerDeath() {
 
     if (finalScore) {
       finalScore.textContent = score;
+    }
+
+    // Simpan Best Score juga saat GAME OVER, termasuk jika kematian
+    // selesai melalui animasi hurt/death.
+    saveBestScore();
+
+    const gameOverBestScore = document.getElementById("gameOverBestScore");
+    if (gameOverBestScore) {
+      gameOverBestScore.textContent =
+        Number(localStorage.getItem("bestScoreLevel2")) || 0;
     }
 
     const gameOverScreen = document.getElementById("gameOverScreen");
