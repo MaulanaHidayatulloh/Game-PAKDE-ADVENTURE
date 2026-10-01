@@ -1159,16 +1159,18 @@
         });
       });
 
-      //  START AUDIO AFTER FIRST USER INTERACTION
-      document.addEventListener(
-        "click",
-        () => {
-          if (soundEnabled) {
-            startBGM();
-          }
-        },
-        { once: true },
-      );
+      function tryStartBGM() {
+        if (musicEnabled) startBGM();
+      }
+
+      document.addEventListener("pointerdown", tryStartBGM, { once: true });
+      document.addEventListener("keydown", tryStartBGM, { once: true });
+
+      window.addEventListener("pageshow", () => {
+        tryStartBGM();
+      });
+
+      tryStartBGM();
 
       // SCREEN NAVIGATION
       function showScreen(screenToShow) {
