@@ -355,6 +355,16 @@
         letter-spacing: 1px;
       }
 
+      .best-score {
+        display: block;
+        margin-top: 4px;
+        font-size: 10px;
+        line-height: 1.2;
+        color: #000;
+        letter-spacing: 1px;
+        opacity: 0.8;
+      }
+
       .level-button.locked {
         cursor: not-allowed;
         background: #66736a;
@@ -836,6 +846,9 @@
                   <span class="level-number"> LEVEL 1 </span>
 
                   <span class="level-status"> MONUMEN NASIONAL </span>
+                  <span class="best-score" id="level1BestScore"
+                    >BEST SCORE: 0</span
+                  >
                 </button>
 
                 <!-- LEVEL 2 -->
@@ -849,6 +862,9 @@
                   <span class="level-status" id="level2Status">
                     SELESAIKAN LEVEL 1
                   </span>
+                  <span class="best-score" id="level2BestScore"
+                    >BEST SCORE: 0</span
+                  >
                 </button>
 
                 <!-- LEVEL 3 -->
@@ -860,6 +876,9 @@
                   <span class="level-status" id="level3Status">
                     SELESAIKAN LEVEL 2
                   </span>
+                  <span class="best-score" id="level3BestScore"
+                    >BEST SCORE: 0</span
+                  >
                 </button>
 
                 <!-- LEVEL 4 -->
@@ -1083,7 +1102,22 @@
       });
 
       // CHECK UNLOCK STATUS
+      function updateBestScores() {
+        const best1 = Number(localStorage.getItem("bestScoreLevel1")) || 0;
+        const best2 = Number(localStorage.getItem("bestScoreLevel2")) || 0;
+        const best3 = Number(localStorage.getItem("bestScoreLevel3")) || 0;
+
+        const bestScore1 = document.getElementById("level1BestScore");
+        const bestScore2 = document.getElementById("level2BestScore");
+        const bestScore3 = document.getElementById("level3BestScore");
+
+        if (bestScore1) bestScore1.textContent = `BEST SCORE: ${best1}`;
+        if (bestScore2) bestScore2.textContent = `BEST SCORE: ${best2}`;
+        if (bestScore3) bestScore3.textContent = `BEST SCORE: ${best3}`;
+      }
+
       function updateLevelStatus() {
+        updateBestScores();
         const level2Unlocked =
           localStorage.getItem("level2Unlocked") === "true";
         const level3Unlocked =
@@ -1094,12 +1128,14 @@
           level2Button.innerHTML = `
             <span class="level-number">LEVEL 2</span>
             <span class="level-status">GEDUNG DPR</span>
+            <span class="best-score" id="level2BestScore">BEST SCORE: 0</span>
           `;
         } else {
           level2Button.classList.add("locked");
           level2Button.innerHTML = `
             <span class="level-number">LEVEL 2 <span class="lock-icon">🔒</span></span>
             <span class="level-status">SELESAIKAN LEVEL 1</span>
+            <span class="best-score" id="level2BestScore">BEST SCORE: 0</span>
           `;
         }
 
@@ -1108,6 +1144,7 @@
           level3Button.innerHTML = `
             <span class="level-number">LEVEL 3</span>
             <span class="level-status">ISTANA PRESIDEN</span>
+            <span class="best-score" id="level3BestScore">BEST SCORE: 0</span>
           `;
         } else {
           level3Button.classList.add("locked");
@@ -1116,6 +1153,7 @@
               LEVEL 3 <span class="lock-icon">🔒</span>
             </span>
             <span class="level-status">SELESAIKAN LEVEL 2</span>
+            <span class="best-score" id="level3BestScore">BEST SCORE: 0</span>
           `;
         }
       }
@@ -1172,6 +1210,9 @@
 
         localStorage.removeItem("level2Unlocked");
         localStorage.removeItem("level3Unlocked");
+        localStorage.removeItem("bestScoreLevel1");
+        localStorage.removeItem("bestScoreLevel2");
+        localStorage.removeItem("bestScoreLevel3");
 
         updateLevelStatus();
       });

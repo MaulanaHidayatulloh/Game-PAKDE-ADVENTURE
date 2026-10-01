@@ -294,6 +294,20 @@ button {
   font-size: 30px;
 }
 
+/* BEST SCORE DI GAME OVER */
+.best-score {
+  color: #94a3b8;
+  margin: -10px 0 20px;
+  font-size: 12px;
+}
+
+.best-score strong {
+  display: block;
+  margin-top: 5px;
+  color: #facc15;
+  font-size: 24px;
+}
+
 /* MOBILE CONTROLS */
 .mobile-controls {
   display: none;
@@ -762,6 +776,15 @@ button {
 
   .canvas-container > .overlay .final-score strong {
     font-size: 22px;
+  }
+
+  .canvas-container > .overlay .best-score {
+    margin: -4px 0 12px;
+    font-size: 9px;
+  }
+
+  .canvas-container > .overlay .best-score strong {
+    font-size: 18px;
   }
 
   .pause-card {

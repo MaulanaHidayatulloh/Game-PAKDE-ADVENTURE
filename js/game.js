@@ -1577,6 +1577,15 @@ function finishPlayerDeath() {
       finalScore.textContent = score;
     }
 
+    // Simpan juga skor dari percobaan yang gagal jika menjadi skor tertinggi.
+    saveBestScore();
+
+    const gameOverBestScore = document.getElementById("gameOverBestScore");
+    if (gameOverBestScore) {
+      gameOverBestScore.textContent =
+        Number(localStorage.getItem("bestScoreLevel1")) || 0;
+    }
+
     const gameOverScreen = document.getElementById("gameOverScreen");
 
     if (gameOverScreen) {
@@ -1615,10 +1624,21 @@ function finishPlayerDeath() {
 }
 
 // WIN GAME
+function saveBestScore() {
+  const key = "bestScoreLevel1";
+  const currentBest = Number(localStorage.getItem(key)) || 0;
+
+  if (score > currentBest) {
+    localStorage.setItem(key, String(score));
+  }
+}
+
 function winGame() {
   if (gameWon) {
     return;
   }
+
+  saveBestScore();
 
   gameWon = true;
   gamePaused = false;
@@ -2154,6 +2174,17 @@ playStartScreenSound();
 document.addEventListener(
   "pointerdown",
   () => {
+    // Jangan menyalakan opening sound saat WIN atau GAME OVER sedang tampil.
+    const gameOverScreen = document.getElementById("gameOverScreen");
+    const winScreen = document.getElementById("winScreen");
+    const isGameOverVisible =
+      gameOverScreen && !gameOverScreen.classList.contains("hidden");
+    const isWinVisible = winScreen && !winScreen.classList.contains("hidden");
+
+    if (isGameOverVisible || isWinVisible) {
+      return;
+    }
+
     if (!gameRunning && !gamePaused && !gameWon) {
       playStartScreenSound();
     }
