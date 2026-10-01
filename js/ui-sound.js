@@ -11,8 +11,8 @@
   clickSound.volume = 0.7;
 
   function soundEnabled() {
-    // Respect the sound toggle used by the main menu, if present.
-    return localStorage.getItem("soundEnabled") !== "false";
+    // Respect the Settings > Sound FX toggle.
+    return localStorage.getItem("sfxEnabled") !== "false";
   }
 
   function playHoverSound() {

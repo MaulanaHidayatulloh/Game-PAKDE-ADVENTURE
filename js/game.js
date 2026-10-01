@@ -18,6 +18,10 @@ if (mainMenuButton) {
   });
 }
 
+// SOUND SETTINGS
+const musicEnabled = localStorage.getItem("musicEnabled") !== "false";
+const sfxEnabled = localStorage.getItem("sfxEnabled") !== "false";
+
 // SOUND
 const sounds = {
   enemy: new Audio("assets/enemy.mp3"),
@@ -51,6 +55,7 @@ sounds.pause.volume = 0.5;
 sounds.pause.loop = true;
 
 function playSound(sound) {
+  if (!sfxEnabled) return;
   sound.currentTime = 0;
   sound.play().catch(() => {});
 }
@@ -61,7 +66,7 @@ function stopSound(sound) {
 }
 
 function playStartScreenSound() {
-  if (gameRunning || gameWon || gamePaused) {
+  if (gameRunning || gameWon || gamePaused || !musicEnabled) {
     return;
   }
 
@@ -1499,7 +1504,7 @@ function resumeGame() {
   stopSound(sounds.pause);
   updatePauseButtonVisibility();
 
-  sounds.background.play().catch(() => {});
+  if (musicEnabled) sounds.background.play().catch(() => {});
 }
 
 function togglePause() {
@@ -1683,7 +1688,7 @@ function resetGame() {
   activatePauseHistoryGuard();
   checkpoint.active = false;
   sounds.background.currentTime = 0;
-  sounds.background.play().catch(() => {});
+  if (musicEnabled) sounds.background.play().catch(() => {});
   score = 0;
   coinsCollected = 0;
   lives = 3;
