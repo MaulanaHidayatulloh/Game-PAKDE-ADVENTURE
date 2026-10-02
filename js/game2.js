@@ -491,6 +491,9 @@ const questionBlocks = [
     coinY: 0,
     coinVelocityY: 0,
     coinLife: 0,
+    item: null,
+    itemY: 0,
+    itemLife: 0,
   },
 
   {
@@ -505,6 +508,9 @@ const questionBlocks = [
     coinY: 0,
     coinVelocityY: 0,
     coinLife: 0,
+    item: null,
+    itemY: 0,
+    itemLife: 0,
   },
 
   {
@@ -519,6 +525,9 @@ const questionBlocks = [
     coinY: 0,
     coinVelocityY: 0,
     coinLife: 0,
+    item: null,
+    itemY: 0,
+    itemLife: 0,
   },
 ];
 
@@ -1119,44 +1128,35 @@ function checkCollision(a, b) {
 
 // QUESTION BLOCK
 function hitQuestionBlock(block) {
-  if (block.hit) {
-    return;
-  }
-
+  if (block.hit) return;
   block.hit = true;
-
   block.offsetY = -8;
   block.velocityY = -5;
-
-  /* SECOND BLOCK = MUSHROOM */
-  if (block === questionBlocks[1]) {
-    spawnMushroom(block);
-
+  const choices = ["coin", "coin", "mushroom", "bonus", "life"];
+  let item = choices[Math.floor(Math.random() * choices.length)];
+  if (item === "mushroom" && !spawnMushroom(block)) item = "coin";
+  block.item = item;
+  block.itemY = block.y - 12;
+  block.itemLife = 55;
+  if (item === "coin") {
+    block.coin = true;
+    block.coinY = block.y - 10;
+    block.coinVelocityY = -9;
+    block.coinLife = 55;
+    score += 100;
+    coinsCollected++;
+    playSound(sounds.coin);
+    createCoinParticles(block.x + block.width / 2, block.y);
+  } else if (item === "mushroom") {
     score += 1000;
-
-    createBlockParticles(block.x + block.width / 2, block.y + block.height / 2);
-
-    updateUI();
-
-    return;
+  } else if (item === "bonus") {
+    score += 500;
+    playSound(sounds.coin);
+  } else if (item === "life") {
+    lives += 1;
+    score += 250;
   }
-
-  /* OTHER BLOCKS = COIN */
-  block.coin = true;
-
-  block.coinY = block.y - 10;
-  block.coinVelocityY = -9;
-  block.coinLife = 55;
-
-  score += 100;
-  coinsCollected++;
-
-  playSound(sounds.coin);
-
-  createCoinParticles(block.x + block.width / 2, block.y);
-
   createBlockParticles(block.x + block.width / 2, block.y + block.height / 2);
-
   updateUI();
 }
 
@@ -1184,19 +1184,21 @@ function updateQuestionBlocks() {
         block.velocityY = 0;
       }
     }
+
+    if (block.itemLife > 0) {
+      block.itemLife--;
+      block.itemY -= 0.35;
+      if (block.itemLife <= 0) block.item = null;
+    }
   });
 }
 
 // MUSHROOM
 function spawnMushroom(block) {
-  if (block !== questionBlocks[1]) {
-    return;
-  }
-
   const mushroom = mushrooms[0];
 
   if (mushroom.active || mushroom.collected) {
-    return;
+    return false;
   }
 
   mushroom.x = block.x + block.width / 2 - mushroom.width / 2;
@@ -1207,6 +1209,7 @@ function spawnMushroom(block) {
   mushroom.active = true;
   mushroom.collected = false;
   mushroom.grounded = false;
+  return true;
 }
 
 function updateMushrooms() {
@@ -1942,6 +1945,8 @@ function resetGame() {
   /* QUESTION BLOCKS */
   questionBlocks.forEach((block) => {
     block.hit = false;
+    block.item = null;
+    block.itemLife = 0;
 
     block.offsetY = 0;
     block.velocityY = 0;
@@ -2025,6 +2030,20 @@ function drawBackground() {
     ctx.fillStyle = skyGradient;
     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   }
+}
+
+function drawLevel2Weather() {
+  ctx.save();
+  for (let i = 0; i < 26; i++) {
+    const speed = 2 + (i % 4) * 0.8;
+    const x = ((i * 73 + gameTime * speed * 3) % (GAME_WIDTH + 100)) - 50;
+    const y = 95 + ((i * 47) % 390);
+    ctx.globalAlpha = 0.22 + (i % 3) * 0.08;
+    ctx.fillStyle = i % 2 ? "#94a3b8" : "#cbd5e1";
+    ctx.fillRect(x, y, 12 + (i % 3) * 5, 2);
+    ctx.fillRect(x + 12, y - 3, 3, 3);
+  }
+  ctx.restore();
 }
 
 function drawForestLayer(parallax, color, baseY, treeHeight) {
@@ -2294,6 +2313,7 @@ function drawFinish() {
 function drawWorld() {
   ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   drawBackground();
+  drawLevel2Weather();
   drawPlatforms();
   drawPlatformLights();
   drawQuestionBlocks();
@@ -2423,26 +2443,5 @@ updatePauseButtonVisibility();
 drawWorld();
 
 playStartScreenSound();
-
-document.addEventListener(
-  "pointerdown",
-  () => {
-    // Jangan menyalakan opening sound saat WIN atau GAME OVER sedang tampil.
-    const gameOverScreen = document.getElementById("gameOverScreen");
-    const winScreen = document.getElementById("winScreen");
-    const isGameOverVisible =
-      gameOverScreen && !gameOverScreen.classList.contains("hidden");
-    const isWinVisible = winScreen && !winScreen.classList.contains("hidden");
-
-    if (isGameOverVisible || isWinVisible) {
-      return;
-    }
-
-    if (!gameRunning && !gamePaused && !gameWon) {
-      playStartScreenSound();
-    }
-  },
-  { passive: true },
-);
 
 requestAnimationFrame(gameLoop);

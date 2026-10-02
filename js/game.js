@@ -842,6 +842,9 @@ const questionBlocks = [
     coinY: 0,
     coinVelocityY: 0,
     coinLife: 0,
+    item: null,
+    itemY: 0,
+    itemLife: 0,
   },
 
   //  BLOCK 2
@@ -857,6 +860,9 @@ const questionBlocks = [
     coinY: 0,
     coinVelocityY: 0,
     coinLife: 0,
+    item: null,
+    itemY: 0,
+    itemLife: 0,
   },
 
   //  BLOCK 3
@@ -872,6 +878,9 @@ const questionBlocks = [
     coinY: 0,
     coinVelocityY: 0,
     coinLife: 0,
+    item: null,
+    itemY: 0,
+    itemLife: 0,
   },
 ];
 
@@ -898,14 +907,10 @@ const mushrooms = [
 
 //  SPAWN MUSHROOM
 function spawnMushroom(block) {
-  if (block !== questionBlocks[1]) {
-    return;
-  }
-
   const mushroom = mushrooms[0];
 
   if (mushroom.active || mushroom.collected) {
-    return;
+    return false;
   }
 
   mushroom.x = block.x + block.width / 2 - mushroom.width / 2;
@@ -920,6 +925,7 @@ function spawnMushroom(block) {
   mushroom.active = true;
   mushroom.collected = false;
   mushroom.grounded = false;
+  return true;
 }
 
 // UPDATE MUSHROOM
@@ -1113,41 +1119,35 @@ function drawMushrooms() {
 
 // QUESTION BLOCK HIT
 function hitQuestionBlock(block) {
-  if (block.hit) {
-    return;
-  }
-
+  if (block.hit) return;
   block.hit = true;
-
   block.offsetY = -8;
   block.velocityY = -5;
-
-  // BLOCK KEDUA = MUSHROOM
-  if (block === questionBlocks[1]) {
-    spawnMushroom(block);
+  const choices = ["coin", "coin", "mushroom", "bonus", "life"];
+  let item = choices[Math.floor(Math.random() * choices.length)];
+  if (item === "mushroom" && !spawnMushroom(block)) item = "coin";
+  block.item = item;
+  block.itemY = block.y - 12;
+  block.itemLife = 55;
+  if (item === "coin") {
+    block.coin = true;
+    block.coinY = block.y - 10;
+    block.coinVelocityY = -9;
+    block.coinLife = 55;
+    score += 100;
+    coinsCollected++;
+    playSound(sounds.coin);
+    createCoinParticles(block.x + block.width / 2, block.y);
+  } else if (item === "mushroom") {
     score += 1000;
-    createBlockParticles(block.x + block.width / 2, block.y + block.height / 2);
-
-    updateUI();
-
-    return;
+  } else if (item === "bonus") {
+    score += 500;
+    playSound(sounds.coin);
+  } else if (item === "life") {
+    lives += 1;
+    score += 250;
   }
-
-  // BLOCK 1 & 3 = COIN
-  block.coin = true;
-  block.coinY = block.y - 10;
-  block.coinVelocityY = -9;
-  block.coinLife = 55;
-
-  score += 100;
-  coinsCollected++;
-
-  playSound(sounds.coin);
-
-  createCoinParticles(block.x + block.width / 2, block.y);
-
   createBlockParticles(block.x + block.width / 2, block.y + block.height / 2);
-
   updateUI();
 }
 
@@ -1173,6 +1173,12 @@ function updateQuestionBlocks() {
       if (block.coinLife <= 0) {
         block.coin = false;
       }
+    }
+
+    if (block.itemLife > 0) {
+      block.itemLife--;
+      block.itemY -= 0.35;
+      if (block.itemLife <= 0) block.item = null;
     }
   });
 }
@@ -1711,6 +1717,8 @@ function resetGame() {
 
   questionBlocks.forEach((block) => {
     block.hit = false;
+    block.item = null;
+    block.itemLife = 0;
     block.offsetY = 0;
     block.velocityY = 0;
     block.coin = false;
@@ -1778,6 +1786,23 @@ function drawBackground() {
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   }
+}
+
+function drawLevel1Weather() {
+  const t = gameTime * 0.35;
+  ctx.save();
+  ctx.fillStyle = "rgba(250,204,21,.9)";
+  ctx.fillRect(1040, 45, 58, 58);
+  ctx.fillStyle = "rgba(250,204,21,.35)";
+  for (let i = 0; i < 8; i++) {
+    const a = (Math.PI * 2 * i) / 8;
+    ctx.fillRect(1068 + Math.cos(a) * 42 - 3, 74 + Math.sin(a) * 42 - 3, 6, 6);
+  }
+  for (let i = 0; i < 4; i++) {
+    const x = ((i * 340 + t * (18 + i * 4)) % (GAME_WIDTH + 180)) - 180;
+    drawCloud(x, 55 + i * 42);
+  }
+  ctx.restore();
 }
 
 function drawCloud(x, y) {
@@ -1943,6 +1968,24 @@ function drawQuestionBlocks() {
       ctx.fillRect(4, -7, 4, 15);
       ctx.restore();
     }
+    if (block.item && block.item !== "coin" && block.itemLife > 0) {
+      const ix = block.x + block.width / 2 - cameraX;
+      ctx.save();
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = "bold 15px monospace";
+      ctx.fillStyle = block.item === "life" ? "#ef4444" : "#f59e0b";
+      ctx.fillText(
+        block.item === "life"
+          ? "+1 LIFE"
+          : block.item === "bonus"
+            ? "+500"
+            : "",
+        ix,
+        block.itemY,
+      );
+      ctx.restore();
+    }
   });
 
   ctx.textAlign = "left";
@@ -2051,6 +2094,7 @@ function drawFinish() {
 function drawWorld() {
   ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   drawBackground();
+  drawLevel1Weather();
   drawPlatforms();
   drawQuestionBlocks();
   drawMushrooms();
@@ -2175,26 +2219,5 @@ updatePauseButtonVisibility();
 drawWorld();
 
 playStartScreenSound();
-
-document.addEventListener(
-  "pointerdown",
-  () => {
-    // Jangan menyalakan opening sound saat WIN atau GAME OVER sedang tampil.
-    const gameOverScreen = document.getElementById("gameOverScreen");
-    const winScreen = document.getElementById("winScreen");
-    const isGameOverVisible =
-      gameOverScreen && !gameOverScreen.classList.contains("hidden");
-    const isWinVisible = winScreen && !winScreen.classList.contains("hidden");
-
-    if (isGameOverVisible || isWinVisible) {
-      return;
-    }
-
-    if (!gameRunning && !gamePaused && !gameWon) {
-      playStartScreenSound();
-    }
-  },
-  { passive: true },
-);
 
 requestAnimationFrame(gameLoop);

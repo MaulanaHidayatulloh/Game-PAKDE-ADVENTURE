@@ -386,6 +386,9 @@ const questionBlocks = [
     coinY: 0,
     coinVelocityY: 0,
     coinLife: 0,
+    item: null,
+    itemY: 0,
+    itemLife: 0,
   },
   {
     x: 1160,
@@ -399,6 +402,9 @@ const questionBlocks = [
     coinY: 0,
     coinVelocityY: 0,
     coinLife: 0,
+    item: null,
+    itemY: 0,
+    itemLife: 0,
   },
   {
     x: 2360,
@@ -412,6 +418,9 @@ const questionBlocks = [
     coinY: 0,
     coinVelocityY: 0,
     coinLife: 0,
+    item: null,
+    itemY: 0,
+    itemLife: 0,
   },
   {
     x: 5360,
@@ -425,6 +434,9 @@ const questionBlocks = [
     coinY: 0,
     coinVelocityY: 0,
     coinLife: 0,
+    item: null,
+    itemY: 0,
+    itemLife: 0,
   },
 ];
 
@@ -1118,44 +1130,35 @@ function checkCollision(a, b) {
 
 // QUESTION BLOCK
 function hitQuestionBlock(block) {
-  if (block.hit) {
-    return;
-  }
-
+  if (block.hit) return;
   block.hit = true;
-
   block.offsetY = -8;
   block.velocityY = -5;
-
-  /* SECOND BLOCK = MUSHROOM */
-  if (block === questionBlocks[1]) {
-    spawnMushroom(block);
-
+  const choices = ["coin", "coin", "mushroom", "bonus", "life"];
+  let item = choices[Math.floor(Math.random() * choices.length)];
+  if (item === "mushroom" && !spawnMushroom(block)) item = "coin";
+  block.item = item;
+  block.itemY = block.y - 12;
+  block.itemLife = 55;
+  if (item === "coin") {
+    block.coin = true;
+    block.coinY = block.y - 10;
+    block.coinVelocityY = -9;
+    block.coinLife = 55;
+    score += 100;
+    coinsCollected++;
+    playSound(sounds.coin);
+    createCoinParticles(block.x + block.width / 2, block.y);
+  } else if (item === "mushroom") {
     score += 1000;
-
-    createBlockParticles(block.x + block.width / 2, block.y + block.height / 2);
-
-    updateUI();
-
-    return;
+  } else if (item === "bonus") {
+    score += 500;
+    playSound(sounds.coin);
+  } else if (item === "life") {
+    lives += 1;
+    score += 250;
   }
-
-  /* OTHER BLOCKS = COIN */
-  block.coin = true;
-
-  block.coinY = block.y - 10;
-  block.coinVelocityY = -9;
-  block.coinLife = 55;
-
-  score += 100;
-  coinsCollected++;
-
-  playSound(sounds.coin);
-
-  createCoinParticles(block.x + block.width / 2, block.y);
-
   createBlockParticles(block.x + block.width / 2, block.y + block.height / 2);
-
   updateUI();
 }
 
@@ -1183,19 +1186,21 @@ function updateQuestionBlocks() {
         block.velocityY = 0;
       }
     }
+
+    if (block.itemLife > 0) {
+      block.itemLife--;
+      block.itemY -= 0.35;
+      if (block.itemLife <= 0) block.item = null;
+    }
   });
 }
 
 // MUSHROOM
 function spawnMushroom(block) {
-  if (block !== questionBlocks[1]) {
-    return;
-  }
-
   const mushroom = mushrooms[0];
 
   if (mushroom.active || mushroom.collected) {
-    return;
+    return false;
   }
 
   mushroom.x = block.x + block.width / 2 - mushroom.width / 2;
@@ -1206,6 +1211,7 @@ function spawnMushroom(block) {
   mushroom.active = true;
   mushroom.collected = false;
   mushroom.grounded = false;
+  return true;
 }
 
 function updateMushrooms() {
@@ -2339,6 +2345,8 @@ function resetGame() {
   /* QUESTION BLOCKS */
   questionBlocks.forEach((block) => {
     block.hit = false;
+    block.item = null;
+    block.itemLife = 0;
 
     block.offsetY = 0;
     block.velocityY = 0;
@@ -2652,6 +2660,22 @@ function drawQuestionBlocks() {
       ctx.fillStyle = "#7dd3fc";
       ctx.fillRect(coinX - 4 - cameraX, coinY - 8, 4, 16);
     }
+    if (block.item && block.item !== "coin" && block.itemLife > 0) {
+      const ix = block.x + block.width / 2 - cameraX;
+      ctx.font = "bold 15px monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = block.item === "life" ? "#ef4444" : "#f59e0b";
+      ctx.fillText(
+        block.item === "life"
+          ? "+1 LIFE"
+          : block.item === "bonus"
+            ? "+500"
+            : "",
+        ix,
+        block.itemY,
+      );
+    }
   });
 }
 
@@ -2855,26 +2879,5 @@ updatePauseButtonVisibility();
 drawWorld();
 
 playStartScreenSound();
-
-document.addEventListener(
-  "pointerdown",
-  () => {
-    // Jangan menyalakan opening sound saat WIN atau GAME OVER sedang tampil.
-    const gameOverScreen = document.getElementById("gameOverScreen");
-    const winScreen = document.getElementById("winScreen");
-    const isGameOverVisible =
-      gameOverScreen && !gameOverScreen.classList.contains("hidden");
-    const isWinVisible = winScreen && !winScreen.classList.contains("hidden");
-
-    if (isGameOverVisible || isWinVisible) {
-      return;
-    }
-
-    if (!gameRunning && !gamePaused && !gameWon) {
-      playStartScreenSound();
-    }
-  },
-  { passive: true },
-);
 
 requestAnimationFrame(gameLoop);
