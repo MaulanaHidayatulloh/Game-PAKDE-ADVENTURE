@@ -120,7 +120,7 @@ Proyek ini dibuat untuk mengeksplorasi pengembangan game berbasis web menggunaka
 
 ## 👨‍💻 Developer
 
-Dikembangkan oleh **[MaulanaHidayatulloh](https://github.com/MaulanaHidayatulloh)**
+Dikembangkan oleh **[Maulana Hidayatulloh Mujanah](https://github.com/MaulanaHidayatulloh)**
 
 ---
 
